@@ -1,0 +1,35 @@
+schema: spec-driven
+
+context: |
+  Language: ru
+  All artifacts must be written in ru.
+  Keep OpenSpec structural headings and SHALL/MUST keywords in English.
+  Project: «Кстати», an iPhone personal memory and day planner.
+  Source documents: docs/reference/Кстати_концепция_и_функционал.pdf, docs/reference/ARCHITECTURE.md, docs/reference/Кстати_C4_архитектура.pdf.
+  Accepted architecture baseline: openspec/architecture.md. Accepted decision records: openspec/adr/README.md.
+  In change designs, cite affected ADR IDs and state any proposed deviation explicitly.
+  Architecture baseline: Swift 6/SwiftUI; offline-first SQLite/GRDB; optional NestJS AI backend behind ports; original records are source of truth.
+  Keep user-confirmed fields separate from AI suggestions. Do not send sensitive content to cloud without explicit consent.
+  Plan changes as small, independently verifiable product slices. Do not assume unsettled UX, iOS target, consent, or calendar decisions are approved.
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always state what is out of scope
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
+
+# Per-operation guidance (optional)
+# Add advisory guidance for how apply and archive work should be conducted.
+# This is separate from artifact rules above.
+# Example:
+#   operations:
+#     apply:
+#       guidance:
+#         - Keep test summaries concise
+#     archive:
+#       guidance:
+#         - Summarize the archive outcome before finishing
