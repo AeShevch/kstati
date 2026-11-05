@@ -4,8 +4,8 @@
 
 ## Выполнено
 
-- `cd ios && swift test -j 1` — 9 Swift Testing тестов прошли. Покрыты инвариант оригинала, миграция/повторное открытие, пустой текст, идемпотентный capture ID, целостность вложения, очистка осиротевшего файла, группы, FTS5, исправление и удаление, ошибка OCR и реальное локальное распознавание Vision на созданном тестом изображении. Первый вызов Vision занял около 52 секунд.
-- При компиляции Swift Testing из отдельного пакета Command Line Tools печатает `Internal Error: DecodingError.dataCorrupted` для macro plugin, но команда завершилась с кодом 0 и все 9 тестов выполнились. Проверку на полном Xcode следует повторить.
+- `cd ios && swift test -j 1` — 10 Swift Testing тестов проходят с Command Line Tools. Покрыты инвариант оригинала, миграция/повторное открытие, пустой текст, идемпотентный capture ID (включая повторный Share с теми же байтами), целостность вложения, очистка осиротевшего файла, группы, FTS5, исправление и удаление, ошибка OCR и реальное локальное распознавание Vision на созданном тестом изображении. Первый вызов Vision занял около 52 секунд.
+- При компиляции Swift Testing из отдельного пакета Command Line Tools иногда печатает `Internal Error: DecodingError.dataCorrupted` для macro plugin. Последний полный запуск завершился с кодом 0: 10 из 10 тестов прошли. Набор нужно повторить на Xcode.
 - `cd ios && xcodegen generate --spec project.yml` — `Kstati.xcodeproj` создан.
 - `npx -y @fission-ai/openspec@1.16.0 validate establish-offline-memory-foundation --strict` — change валиден.
 

@@ -4,7 +4,6 @@ import MemoryCore
 import MemoryPersistence
 
 final class ShareViewController: UIViewController {
-    private let captureID = UUID().uuidString
     private let status = UILabel()
     private let saveButton = UIButton(type: .system)
     private var imageData: Data?
@@ -66,7 +65,7 @@ final class ShareViewController: UIViewController {
                 throw MemoryError.unavailableContainer
             }
             let repository = try MemoryRepository(directory: container)
-            try repository.saveImage(imageData, captureID: captureID)
+            try repository.saveImage(imageData, captureID: ShareCaptureID.forImage(imageData))
             status.text = "Сохранено локально"
             extensionContext?.completeRequest(returningItems: nil)
         } catch {

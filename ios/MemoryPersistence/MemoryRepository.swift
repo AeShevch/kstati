@@ -3,6 +3,12 @@ import Foundation
 import GRDB
 import MemoryCore
 
+public enum ShareCaptureID {
+    public static func forImage(_ data: Data) -> String {
+        "share-image:" + SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+}
+
 public final class MemoryRepository: @unchecked Sendable {
     public let directory: URL
     private let originals: URL

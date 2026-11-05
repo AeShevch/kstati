@@ -27,6 +27,20 @@ import MemoryCore
     #expect(try repo.search("исправлено").map(\.id) == [first.id])
 }
 
+@Test func repeatedShareOfSameBytesUsesStableCaptureID() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let repo = try MemoryRepository(directory: directory)
+    let data = Data([10, 20, 30])
+    let firstID = ShareCaptureID.forImage(data)
+    let secondID = ShareCaptureID.forImage(data)
+    #expect(firstID == secondID)
+    let first = try repo.saveImage(data, captureID: firstID)
+    let second = try repo.saveImage(data, captureID: secondID)
+    #expect(first.id == second.id)
+    #expect(try repo.allItems().count == 1)
+}
+
 @Test func groupDeletionKeepsItemAndOtherMembership() throws {
     let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     defer { try? FileManager.default.removeItem(at: directory) }
