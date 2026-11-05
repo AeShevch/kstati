@@ -1,0 +1,596 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0119A1F32EA7A42D9C7C35EF /* MemoryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAC61241077C389273FF73 /* MemoryViews.swift */; };
+		10FDA2FFCF4A94FE896BBEFA /* MemoryPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = BC9752D92291E24E4DC83A03 /* MemoryPersistence */; };
+		3C557E279F9450A4C258796E /* KstatiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */; };
+		61AED2EAB50950C775ECAA48 /* MemoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC2CB9F96D1E0CFE066ED3B /* MemoryCore */; };
+		6449EBC4F515CB94BBD17494 /* KstatiShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7287E7505A5CD58BFBA53A11 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */; };
+		9FCBB462CF1404F486FD201B /* KstatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A139012724A8FAF359E4BDD0 /* KstatiApp.swift */; };
+		B0A44D74E7243DE91C94B166 /* MemoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 77526D0C32F0A49AA6613468 /* MemoryCore */; };
+		C0F5345A96982B5908488C7D /* MemoryOCR in Frameworks */ = {isa = PBXBuildFile; productRef = 4158684B6A81369F00B73C11 /* MemoryOCR */; };
+		EF02C690C34ECA580EF79D37 /* MemoryPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = BE36173BA8BCFB606BC0B906 /* MemoryPersistence */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB71890F6E2C032524889759 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C3AE9C98A28DE55DBAE6A0C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 94D9EAB68C62DE8AF6F5261C;
+			remoteInfo = KstatiShareExtension;
+		};
+		CCCA9E4E3CAB3A75F26F3EC2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9C3AE9C98A28DE55DBAE6A0C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6BAFDA35B0BD54B4A4A3B0AB;
+			remoteInfo = Kstati;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0BC8E83BA3BC3BD31B05CABA /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				6449EBC4F515CB94BBD17494 /* KstatiShareExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		521A55E7D12039BE3E145608 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = .; sourceTree = SOURCE_ROOT; };
+		5850C5FB8C91F769613A734C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		69046E554F46E2F34E68F995 /* Kstati.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kstati.entitlements; sourceTree = "<group>"; };
+		87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = KstatiShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		99EF35E04B1D85B529B5F0A3 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
+		A139012724A8FAF359E4BDD0 /* KstatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiApp.swift; sourceTree = "<group>"; };
+		EDDAC61241077C389273FF73 /* MemoryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViews.swift; sourceTree = "<group>"; };
+		F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiUITests.swift; sourceTree = "<group>"; };
+		F7F14308A929C05A700A1D6A /* KstatiUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KstatiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAF7A92C5EC287A86B7F9B57 /* Kstati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Kstati.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4C87F225F6A451574419DDCD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61AED2EAB50950C775ECAA48 /* MemoryCore in Frameworks */,
+				10FDA2FFCF4A94FE896BBEFA /* MemoryPersistence in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4FCEE630BF218D57BA463C46 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0A44D74E7243DE91C94B166 /* MemoryCore in Frameworks */,
+				EF02C690C34ECA580EF79D37 /* MemoryPersistence in Frameworks */,
+				C0F5345A96982B5908488C7D /* MemoryOCR in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2F182B3193AC05DAB999DCF9 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				521A55E7D12039BE3E145608 /* ios */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		96EA57B0927D5F54AB59CCC4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FAF7A92C5EC287A86B7F9B57 /* Kstati.app */,
+				87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */,
+				F7F14308A929C05A700A1D6A /* KstatiUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		980AE5FBC4A9CD60591CF168 /* KstatiShareExtension */ = {
+			isa = PBXGroup;
+			children = (
+				5850C5FB8C91F769613A734C /* Info.plist */,
+				99EF35E04B1D85B529B5F0A3 /* Share.entitlements */,
+				18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */,
+			);
+			path = KstatiShareExtension;
+			sourceTree = "<group>";
+		};
+		A009886C7A521ED972000D13 /* KstatiApp */ = {
+			isa = PBXGroup;
+			children = (
+				69046E554F46E2F34E68F995 /* Kstati.entitlements */,
+				A139012724A8FAF359E4BDD0 /* KstatiApp.swift */,
+				EDDAC61241077C389273FF73 /* MemoryViews.swift */,
+			);
+			path = KstatiApp;
+			sourceTree = "<group>";
+		};
+		A1B3C85E2FE30FE88E1799A0 = {
+			isa = PBXGroup;
+			children = (
+				A009886C7A521ED972000D13 /* KstatiApp */,
+				980AE5FBC4A9CD60591CF168 /* KstatiShareExtension */,
+				2F182B3193AC05DAB999DCF9 /* Packages */,
+				BCFEFDD48820844D2563F36C /* UITests */,
+				96EA57B0927D5F54AB59CCC4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BCFEFDD48820844D2563F36C /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */,
+			);
+			name = UITests;
+			path = Tests/UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6BAFDA35B0BD54B4A4A3B0AB /* Kstati */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 720259C14984DA9538221ECC /* Build configuration list for PBXNativeTarget "Kstati" */;
+			buildPhases = (
+				166BFB655EE2B4872E835FF6 /* Sources */,
+				4FCEE630BF218D57BA463C46 /* Frameworks */,
+				0BC8E83BA3BC3BD31B05CABA /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B16997D839030E516E7AB43 /* PBXTargetDependency */,
+			);
+			name = Kstati;
+			packageProductDependencies = (
+				77526D0C32F0A49AA6613468 /* MemoryCore */,
+				BE36173BA8BCFB606BC0B906 /* MemoryPersistence */,
+				4158684B6A81369F00B73C11 /* MemoryOCR */,
+			);
+			productName = Kstati;
+			productReference = FAF7A92C5EC287A86B7F9B57 /* Kstati.app */;
+			productType = "com.apple.product-type.application";
+		};
+		94D9EAB68C62DE8AF6F5261C /* KstatiShareExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3D1F3E9FB91B62EEF2B0555 /* Build configuration list for PBXNativeTarget "KstatiShareExtension" */;
+			buildPhases = (
+				63C13157AF588AB12F43C020 /* Sources */,
+				4C87F225F6A451574419DDCD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KstatiShareExtension;
+			packageProductDependencies = (
+				4FC2CB9F96D1E0CFE066ED3B /* MemoryCore */,
+				BC9752D92291E24E4DC83A03 /* MemoryPersistence */,
+			);
+			productName = KstatiShareExtension;
+			productReference = 87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		B497062D94B724A08FABDC3C /* KstatiUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EAD99CD67AD25AFBC05BC1D9 /* Build configuration list for PBXNativeTarget "KstatiUITests" */;
+			buildPhases = (
+				A7559C7D41244AD14E40CB50 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2F7A34DC961B01FBBCB92AAA /* PBXTargetDependency */,
+			);
+			name = KstatiUITests;
+			packageProductDependencies = (
+			);
+			productName = KstatiUITests;
+			productReference = F7F14308A929C05A700A1D6A /* KstatiUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9C3AE9C98A28DE55DBAE6A0C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					6BAFDA35B0BD54B4A4A3B0AB = {
+						ProvisioningStyle = Automatic;
+					};
+					94D9EAB68C62DE8AF6F5261C = {
+						ProvisioningStyle = Automatic;
+					};
+					B497062D94B724A08FABDC3C = {
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6BAFDA35B0BD54B4A4A3B0AB;
+					};
+				};
+			};
+			buildConfigurationList = 085718BEDBB45292151A5A54 /* Build configuration list for PBXProject "Kstati" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A1B3C85E2FE30FE88E1799A0;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1E3A66F841DE31890A304678 /* XCLocalSwiftPackageReference "." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 96EA57B0927D5F54AB59CCC4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6BAFDA35B0BD54B4A4A3B0AB /* Kstati */,
+				94D9EAB68C62DE8AF6F5261C /* KstatiShareExtension */,
+				B497062D94B724A08FABDC3C /* KstatiUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		166BFB655EE2B4872E835FF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9FCBB462CF1404F486FD201B /* KstatiApp.swift in Sources */,
+				0119A1F32EA7A42D9C7C35EF /* MemoryViews.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63C13157AF588AB12F43C020 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7287E7505A5CD58BFBA53A11 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7559C7D41244AD14E40CB50 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C557E279F9450A4C258796E /* KstatiUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2F7A34DC961B01FBBCB92AAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6BAFDA35B0BD54B4A4A3B0AB /* Kstati */;
+			targetProxy = CCCA9E4E3CAB3A75F26F3EC2 /* PBXContainerItemProxy */;
+		};
+		3B16997D839030E516E7AB43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 94D9EAB68C62DE8AF6F5261C /* KstatiShareExtension */;
+			targetProxy = CB71890F6E2C032524889759 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		440DA50D4239C785F6360FC7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KstatiShareExtension/Share.entitlements;
+				INFOPLIST_FILE = KstatiShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		875D6415459A3C319A4CFC16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Kstati;
+			};
+			name = Debug;
+		};
+		BDF9DE4D9E34AFBFD4FF90B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = KstatiShareExtension/Share.entitlements;
+				INFOPLIST_FILE = KstatiShareExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C19B61ECB76AD859B7EC3C12 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Kstati;
+			};
+			name = Release;
+		};
+		D83DB088AB51F34B8F493E36 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E370B5D525DAE760D53CE512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = KstatiApp/Kstati.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Кстати";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F1A8A450A46796FD0F67FA31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		FC9D865716D46CDAC828E610 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = KstatiApp/Kstati.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Кстати";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.kstati.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		085718BEDBB45292151A5A54 /* Build configuration list for PBXProject "Kstati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1A8A450A46796FD0F67FA31 /* Debug */,
+				D83DB088AB51F34B8F493E36 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		720259C14984DA9538221ECC /* Build configuration list for PBXNativeTarget "Kstati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E370B5D525DAE760D53CE512 /* Debug */,
+				FC9D865716D46CDAC828E610 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C3D1F3E9FB91B62EEF2B0555 /* Build configuration list for PBXNativeTarget "KstatiShareExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				440DA50D4239C785F6360FC7 /* Debug */,
+				BDF9DE4D9E34AFBFD4FF90B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EAD99CD67AD25AFBC05BC1D9 /* Build configuration list for PBXNativeTarget "KstatiUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				875D6415459A3C319A4CFC16 /* Debug */,
+				C19B61ECB76AD859B7EC3C12 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		1E3A66F841DE31890A304678 /* XCLocalSwiftPackageReference "." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = .;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4158684B6A81369F00B73C11 /* MemoryOCR */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoryOCR;
+		};
+		4FC2CB9F96D1E0CFE066ED3B /* MemoryCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoryCore;
+		};
+		77526D0C32F0A49AA6613468 /* MemoryCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoryCore;
+		};
+		BC9752D92291E24E4DC83A03 /* MemoryPersistence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoryPersistence;
+		};
+		BE36173BA8BCFB606BC0B906 /* MemoryPersistence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MemoryPersistence;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9C3AE9C98A28DE55DBAE6A0C /* Project object */;
+}
