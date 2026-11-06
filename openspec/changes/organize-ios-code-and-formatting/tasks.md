@@ -25,12 +25,12 @@
 
 - [x] 4.1 Добавить корневую `.swift-format` с отступом 4 пробела и длиной строки 120 символов; проверить, что `xcrun swift-format dump-configuration --effective` отражает эти значения для исходника.
 - [x] 4.2 После переноса применить `xcrun swift-format` ко всем собственным Swift-файлам, включая `ios/Package.swift`, отдельным коммитом без правок логики; проверить `xcrun swift-format lint --strict` на тех же путях и отсутствие содержательных изменений при просмотре diff.
-- [ ] 4.3 Записать в `ios/TESTING.md` точную команду форматирования и read-only проверки с версией инструмента; проверить команду из чистого рабочего каталога.
+- [x] 4.3 Записать в `ios/TESTING.md` точную команду форматирования и read-only проверки с версией инструмента; проверить команду из чистого рабочего каталога.
 
 ## 5. Сквозная проверка реорганизации
 
-- [ ] 5.1 Повторно выполнить `cd ios && swift test -j 1`, сборку всех Xcode targets и оба E2E test plans на iOS Simulator; сравнить число и смысл проверок с baseline и сохранить результаты в `ios/TESTING.md`.
-- [ ] 5.2 Повторно запустить `cd ios && xcodegen generate --spec project.yml` и проверить отсутствие изменений `project.pbxproj`; выполнить `npx -y @fission-ai/openspec@1.16.0 validate organize-ios-code-and-formatting --strict`, `git diff --check` и убедиться, что схема БД и пользовательские сценарии не менялись.
+- [x] 5.1 Повторно выполнить `cd ios && swift test -j 1`, сборку всех Xcode targets и оба E2E test plans на iOS Simulator; сравнить число и смысл проверок с baseline и сохранить результаты в `ios/TESTING.md`.
+- [x] 5.2 Повторно запустить `cd ios && xcodegen generate --spec project.yml` и проверить отсутствие изменений `project.pbxproj`; выполнить `npx -y @fission-ai/openspec@1.16.0 validate organize-ios-code-and-formatting --strict`, `git diff --check` и убедиться, что схема БД и пользовательские сценарии не менялись.
 
 ## Workflow follow-up
 
