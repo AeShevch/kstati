@@ -9,9 +9,9 @@
 
 ## 2. Один основной тип на файл
 
-- [ ] 2.1 Разделить `MemoryModels.swift` на файлы основных доменных типов и вынести `ShareCaptureID` из `MemoryRepository.swift`, не меняя сигнатур и SQL; проверить `cd ios && swift test -j 1`.
-- [ ] 2.2 Разделить `VisionOCR.swift` на файлы распознавателя, порта и процессора; проверить тесты `MemoryOCRTests` и сборку `MemoryOCR`.
-- [ ] 2.3 Разделить `MemoryViews.swift` на файлы экранов, а `KstatiApp.swift` — на приложение, store и доступ к App Group; проверить сборку всех Xcode targets и запуск существующих UI-тестов.
+- [x] 2.1 Разделить `MemoryModels.swift` на файлы основных доменных типов и вынести `ShareCaptureID` из `MemoryRepository.swift`, не меняя сигнатур и SQL; проверить `cd ios && swift test -j 1`.
+- [x] 2.2 Разделить `VisionOCR.swift` на файлы распознавателя, порта и процессора; проверить тесты `MemoryOCRTests` и сборку `MemoryOCR`.
+- [x] 2.3 Разделить `MemoryViews.swift` на файлы экранов, а `KstatiApp.swift` — на приложение, store и доступ к App Group; проверить сборку всех Xcode targets и запуск существующих UI-тестов.
 
 ## 3. E2E-тесты и Page Objects
 
