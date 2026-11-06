@@ -11,9 +11,11 @@ struct ShareFixtureHost: App {
 private struct FixtureView: View {
     @State private var sharing = false
     private let image: UIImage = {
-        let original = UIImage(data: try! Data(contentsOf: Bundle.main.url(
-            forResource: "appointment", withExtension: "png"
-        )!))!
+        let original = UIImage(
+            data: try! Data(
+                contentsOf: Bundle.main.url(
+                    forResource: "appointment", withExtension: "png"
+                )!))!
         guard ProcessInfo.processInfo.arguments.contains("-failureImage") else { return original }
         return UIGraphicsImageRenderer(size: original.size).image { renderer in
             original.draw(in: CGRect(origin: .zero, size: original.size))

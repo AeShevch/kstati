@@ -1,6 +1,7 @@
 import Foundation
-import Testing
 import MemoryCore
+import Testing
+
 @testable import MemoryPersistence
 
 @Test func textSurvivesReopenAndRejectsWhitespace() throws {
@@ -61,8 +62,12 @@ import MemoryCore
     let repo = try MemoryRepository(directory: directory)
     let item = try repo.saveImage(Data([1, 2]), captureID: "unique")
     let originalPath: String
-    if case .image(let path, _) = item.original { originalPath = path }
-    else { Issue.record("Expected image original"); return }
+    if case .image(let path, _) = item.original {
+        originalPath = path
+    } else {
+        Issue.record("Expected image original")
+        return
+    }
     try repo.confirmText("врач", for: item.id)
     try repo.confirmText("дерматолог", for: item.id)
     #expect(try repo.search("врач").isEmpty)

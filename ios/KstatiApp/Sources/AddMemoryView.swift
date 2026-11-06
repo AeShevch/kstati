@@ -1,6 +1,6 @@
+import MemoryCore
 import SwiftUI
 import UIKit
-import MemoryCore
 
 struct AddMemoryView: View {
     @ObservedObject var store: MemoryStore
@@ -19,17 +19,27 @@ struct AddMemoryView: View {
                 ToolbarItem(placement: .cancellationAction) { Button("Отмена") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Сохранить") {
-                        if store.saveText(text) { dismiss() }
-                        else { validationMessage = store.error ?? "Не удалось сохранить"; store.error = nil }
+                        if store.saveText(text) {
+                            dismiss()
+                        } else {
+                            validationMessage = store.error ?? "Не удалось сохранить"
+                            store.error = nil
+                        }
                     }
-                        .accessibilityIdentifier("saveMemory")
+                    .accessibilityIdentifier("saveMemory")
                 }
             }
-            .alert("Не удалось сохранить", isPresented: Binding(
-                get: { validationMessage != nil },
-                set: { if !$0 { validationMessage = nil } }
-            )) { Button("ОК") { validationMessage = nil } }
-            message: { Text(validationMessage ?? "") }
+            .alert(
+                "Не удалось сохранить",
+                isPresented: Binding(
+                    get: { validationMessage != nil },
+                    set: { if !$0 { validationMessage = nil } }
+                )
+            ) {
+                Button("ОК") { validationMessage = nil }
+            } message: {
+                Text(validationMessage ?? "")
+            }
         }
     }
 }

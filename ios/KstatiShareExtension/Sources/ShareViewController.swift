@@ -1,7 +1,7 @@
-import UIKit
-import UniformTypeIdentifiers
 import MemoryCore
 import MemoryPersistence
+import UIKit
+import UniformTypeIdentifiers
 
 private struct SendableItemProvider: @unchecked Sendable {
     let value: NSItemProvider
@@ -37,15 +37,18 @@ final class ShareViewController: UIViewController {
     }
 
     private func loadImage() {
-        let providers = (extensionContext?.inputItems as? [NSExtensionItem])?
+        let providers =
+            (extensionContext?.inputItems as? [NSExtensionItem])?
             .flatMap { $0.attachments ?? [] } ?? []
-        guard let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.image.identifier) }) else {
+        guard let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.image.identifier) })
+        else {
             status.text = "Изображение не найдено"
             return
         }
-        let identifier = provider.registeredTypeIdentifiers.first {
-            UTType($0)?.conforms(to: .image) == true
-        } ?? UTType.image.identifier
+        let identifier =
+            provider.registeredTypeIdentifiers.first {
+                UTType($0)?.conforms(to: .image) == true
+            } ?? UTType.image.identifier
         let sendableProvider = SendableItemProvider(value: provider)
         provider.loadDataRepresentation(forTypeIdentifier: identifier) { [weak self] data, error in
             let imageData = data.flatMap { UIImage(data: $0) == nil ? nil : $0 }
@@ -55,8 +58,9 @@ final class ShareViewController: UIViewController {
                 if let imageData {
                     self.setImageData(imageData)
                 } else {
-                    self.loadDecodedImage(from: sendableProvider.value,
-                                          identifier: identifier, initialError: errorMessage)
+                    self.loadDecodedImage(
+                        from: sendableProvider.value,
+                        identifier: identifier, initialError: errorMessage)
                 }
             }
         }
@@ -68,7 +72,8 @@ final class ShareViewController: UIViewController {
             if let image = object as? UIImage {
                 imageData = image.pngData()
             } else if let data = object as? Data {
-                imageData = UIImage(data: data)?.pngData()
+                imageData =
+                    UIImage(data: data)?.pngData()
                     ?? (try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIImage.self, from: data))?.pngData()
             } else if let url = object as? URL, let data = try? Data(contentsOf: url) {
                 imageData = UIImage(data: data) == nil ? nil : data
@@ -81,7 +86,8 @@ final class ShareViewController: UIViewController {
                 if let imageData {
                     self.setImageData(imageData)
                 } else {
-                    self.status.text = "Не удалось прочитать изображение: \(errorMessage ?? initialError ?? "неподдерживаемые данные")"
+                    self.status.text =
+                        "Не удалось прочитать изображение: \(errorMessage ?? initialError ?? "неподдерживаемые данные")"
                 }
             }
         }
@@ -99,13 +105,20 @@ final class ShareViewController: UIViewController {
         saveButton.isEnabled = false
         status.text = "Сохранение…"
         do {
-            guard let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.app.kstati.memory") else {
+            guard
+                let container = FileManager.default.containerURL(
+                    forSecurityApplicationGroupIdentifier: "group.app.kstati.memory")
+            else {
                 throw MemoryError.unavailableContainer
             }
             #if DEBUG
-            if FileManager.default.fileExists(atPath: container.appendingPathComponent(".kstati-e2e-fail-write").path) {
-                throw NSError(domain: "KstatiE2ETest", code: 1, userInfo: [NSLocalizedDescriptionKey: "Тестовая ошибка записи"])
-            }
+                if FileManager.default.fileExists(
+                    atPath: container.appendingPathComponent(".kstati-e2e-fail-write").path)
+                {
+                    throw NSError(
+                        domain: "KstatiE2ETest", code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "Тестовая ошибка записи"])
+                }
             #endif
             let repository = try MemoryRepository(directory: container)
             try repository.saveImage(imageData, captureID: ShareCaptureID.forImage(imageData))

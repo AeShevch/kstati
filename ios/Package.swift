@@ -15,10 +15,21 @@ let package = Package(
     ],
     targets: [
         .target(name: "MemoryCore", path: "MemoryCore/Sources"),
-        .target(name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")], path: "MemoryPersistence/Sources"),
+        .target(
+            name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")],
+            path: "MemoryPersistence/Sources"),
         .target(name: "MemoryOCR", dependencies: ["MemoryCore", "MemoryPersistence"], path: "MemoryOCR/Sources"),
-        .testTarget(name: "MemoryCoreTests", dependencies: ["MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryCore/Tests"),
-        .testTarget(name: "MemoryPersistenceTests", dependencies: ["MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryPersistence/Tests"),
-        .testTarget(name: "MemoryOCRTests", dependencies: ["MemoryOCR", "MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryOCR/Tests"),
+        .testTarget(
+            name: "MemoryCoreTests", dependencies: ["MemoryCore", .product(name: "Testing", package: "swift-testing")],
+            path: "MemoryCore/Tests"),
+        .testTarget(
+            name: "MemoryPersistenceTests",
+            dependencies: ["MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")],
+            path: "MemoryPersistence/Tests"),
+        .testTarget(
+            name: "MemoryOCRTests",
+            dependencies: [
+                "MemoryOCR", "MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing"),
+            ], path: "MemoryOCR/Tests"),
     ]
 )

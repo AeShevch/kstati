@@ -10,8 +10,10 @@ public struct MemoryItem: Equatable, Sendable, Identifiable {
     public let createdAt: Date
     public let updatedAt: Date
 
-    public init(id: UUID, captureID: String, kind: MemoryKind, original: Original,
-                confirmedText: ConfirmedText?, suggestion: OcrSuggestion?, createdAt: Date, updatedAt: Date) {
+    public init(
+        id: UUID, captureID: String, kind: MemoryKind, original: Original,
+        confirmedText: ConfirmedText?, suggestion: OcrSuggestion?, createdAt: Date, updatedAt: Date
+    ) {
         self.id = id
         self.captureID = captureID
         self.kind = kind
@@ -23,8 +25,9 @@ public struct MemoryItem: Equatable, Sendable, Identifiable {
     }
 
     public func confirming(_ text: String, at date: Date = .now) -> MemoryItem {
-        MemoryItem(id: id, captureID: captureID, kind: kind, original: original,
-                   confirmedText: ConfirmedText(value: text, confirmedAt: date),
-                   suggestion: suggestion, createdAt: createdAt, updatedAt: date)
+        MemoryItem(
+            id: id, captureID: captureID, kind: kind, original: original,
+            confirmedText: ConfirmedText(value: text, confirmedAt: date),
+            suggestion: suggestion, createdAt: createdAt, updatedAt: date)
     }
 }

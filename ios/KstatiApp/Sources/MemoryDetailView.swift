@@ -1,6 +1,6 @@
+import MemoryCore
 import SwiftUI
 import UIKit
-import MemoryCore
 
 struct MemoryDetailView: View {
     @ObservedObject var store: MemoryStore
@@ -20,31 +20,37 @@ struct MemoryDetailView: View {
                     case .text(let value): Text(value).accessibilityIdentifier("originalText")
                     case .image:
                         if let data = try? store.repository?.originalData(for: id),
-                           let image = UIImage(data: data) {
+                            let image = UIImage(data: data)
+                        {
                             Image(uiImage: image).resizable().scaledToFit()
                                 .accessibilityIdentifier("originalImage")
-                        } else { Text("Не удалось открыть оригинал") }
+                        } else {
+                            Text("Не удалось открыть оригинал")
+                        }
                     }
                 }
                 if let suggestion = item.suggestion?.value {
                     Section("Предложение OCR") { Text(suggestion).accessibilityIdentifier("ocrSuggestion") }
                 }
                 Section("Подтверждённый текст или описание") {
-                    TextField("Текст", text: Binding(
-                        get: { store.draft(for: id) },
-                        set: { store.setDraft($0, for: id) }
-                    ), axis: .vertical)
-                        .lineLimit(3...8)
-                        .accessibilityIdentifier("confirmedTextEditor")
-                        .focused($isEditingText)
-                        .id(editorRevision)
+                    TextField(
+                        "Текст",
+                        text: Binding(
+                            get: { store.draft(for: id) },
+                            set: { store.setDraft($0, for: id) }
+                        ), axis: .vertical
+                    )
+                    .lineLimit(3...8)
+                    .accessibilityIdentifier("confirmedTextEditor")
+                    .focused($isEditingText)
+                    .id(editorRevision)
                     HStack {
                         Button("Очистить") {
                             isEditingText = false
                             store.setDraft("", for: id)
                             editorRevision += 1
                         }
-                            .accessibilityIdentifier("clearConfirmedText")
+                        .accessibilityIdentifier("clearConfirmedText")
                         .buttonStyle(.borderless)
                         Spacer()
                         Button("Сохранить текст") {
@@ -57,10 +63,12 @@ struct MemoryDetailView: View {
                 }
                 Section("Группы") {
                     ForEach(store.groups) { group in
-                        Toggle(group.name, isOn: Binding(
-                            get: { (try? store.repository?.groups(for: id).contains(group)) ?? false },
-                            set: { store.setMembership(itemID: id, groupID: group.id, enabled: $0) }
-                        ))
+                        Toggle(
+                            group.name,
+                            isOn: Binding(
+                                get: { (try? store.repository?.groups(for: id).contains(group)) ?? false },
+                                set: { store.setMembership(itemID: id, groupID: group.id, enabled: $0) }
+                            ))
                     }
                 }
                 Section {
@@ -76,7 +84,10 @@ struct MemoryDetailView: View {
             if store.draft(for: id).isEmpty { store.setDraft(value ?? "", for: id) }
         }
         .confirmationDialog("Удалить запись и оригинал?", isPresented: $deleting) {
-            Button("Удалить", role: .destructive) { store.deleteItem(id); dismiss() }
+            Button("Удалить", role: .destructive) {
+                store.deleteItem(id)
+                dismiss()
+            }
         }
     }
 }

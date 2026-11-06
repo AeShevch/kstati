@@ -12,8 +12,11 @@ struct ShareSheetPage {
     func openKstati() {
         for _ in 0..<3 where !saveButton.waitForExistence(timeout: 2) {
             let target = host.cells["Кстати"]
-            if target.exists { target.tap() }
-            else { host.coordinate(withNormalizedOffset: CGVector(dx: 0.38, dy: 0.25)).tap() }
+            if target.exists {
+                target.tap()
+            } else {
+                host.coordinate(withNormalizedOffset: CGVector(dx: 0.38, dy: 0.25)).tap()
+            }
         }
         XCTAssertTrue(saveButton.waitForExistence(timeout: 10), host.debugDescription)
     }
