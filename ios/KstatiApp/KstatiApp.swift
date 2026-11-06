@@ -18,6 +18,7 @@ final class MemoryStore: ObservableObject {
     @Published var items: [MemoryItem] = []
     @Published var groups: [MemoryGroup] = []
     @Published var error: String?
+    @Published private var drafts: [UUID: String] = [:]
     let repository: MemoryRepository?
 
     init() {
@@ -48,6 +49,20 @@ final class MemoryStore: ObservableObject {
     func confirm(_ value: String, itemID: UUID) {
         do { try repository?.confirmText(value, for: itemID); refresh() }
         catch { self.error = error.localizedDescription }
+    }
+
+    func draft(for id: UUID) -> String {
+        if let draft = drafts[id] { return draft }
+        let item = items.first { $0.id == id }
+        return item?.confirmedText?.value ?? item?.suggestion?.value ?? ""
+    }
+
+    func setDraft(_ value: String, for id: UUID) {
+        drafts[id] = value
+    }
+
+    func confirmDraft(for id: UUID) {
+        confirm(draft(for: id), itemID: id)
     }
 
     func createGroup(_ name: String) {

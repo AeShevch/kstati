@@ -96,8 +96,9 @@ struct MemoryDetailView: View {
     @ObservedObject var store: MemoryStore
     let id: UUID
     @Environment(\.dismiss) private var dismiss
-    @State private var editedText = ""
     @State private var deleting = false
+    @State private var editorRevision = 0
+    @FocusState private var isEditingText: Bool
 
     private var item: MemoryItem? { store.items.first { $0.id == id } }
 
@@ -119,10 +120,30 @@ struct MemoryDetailView: View {
                     Section("Предложение OCR") { Text(suggestion).accessibilityIdentifier("ocrSuggestion") }
                 }
                 Section("Подтверждённый текст или описание") {
-                    TextEditor(text: $editedText).frame(minHeight: 110)
+                    TextField("Текст", text: Binding(
+                        get: { store.draft(for: id) },
+                        set: { store.setDraft($0, for: id) }
+                    ), axis: .vertical)
+                        .lineLimit(3...8)
                         .accessibilityIdentifier("confirmedTextEditor")
-                    Button("Сохранить текст") { store.confirm(editedText, itemID: id) }
+                        .focused($isEditingText)
+                        .id(editorRevision)
+                    HStack {
+                        Button("Очистить") {
+                            isEditingText = false
+                            store.setDraft("", for: id)
+                            editorRevision += 1
+                        }
+                            .accessibilityIdentifier("clearConfirmedText")
+                        .buttonStyle(.borderless)
+                        Spacer()
+                        Button("Сохранить текст") {
+                            store.confirmDraft(for: id)
+                            isEditingText = false
+                        }
                         .accessibilityIdentifier("confirmText")
+                        .buttonStyle(.borderless)
+                    }
                 }
                 Section("Группы") {
                     ForEach(store.groups) { group in
@@ -139,13 +160,10 @@ struct MemoryDetailView: View {
         }
         .navigationTitle("Запись")
         .onAppear {
-            if let item {
-                editedText = item.confirmedText?.value ?? item.suggestion?.value ?? ""
-                store.runOCRIfNeeded(item)
-            }
+            if let item { store.runOCRIfNeeded(item) }
         }
         .onChange(of: item?.suggestion?.value) { _, value in
-            if editedText.isEmpty { editedText = value ?? "" }
+            if store.draft(for: id).isEmpty { store.setDraft(value ?? "", for: id) }
         }
         .confirmationDialog("Удалить запись и оригинал?", isPresented: $deleting) {
             Button("Удалить", role: .destructive) { store.deleteItem(id); dismiss() }
@@ -167,7 +185,15 @@ struct GroupsView: View {
                     Button("Создать") { store.createGroup(newName); newName = "" }
                 }
                 ForEach(store.groups) { group in
-                    Text(group.name).accessibilityIdentifier("group_\(group.id.uuidString)")
+                    HStack {
+                        Text(group.name).accessibilityIdentifier("group_\(group.id.uuidString)")
+                        Spacer()
+                        Button(role: .destructive) { store.deleteGroup(group.id) } label: {
+                            Image(systemName: "trash")
+                        }
+                        .accessibilityLabel("Удалить группу \(group.name)")
+                        .buttonStyle(.borderless)
+                    }
                 }
                 .onDelete { offsets in
                     for index in offsets { store.deleteGroup(store.groups[index].id) }

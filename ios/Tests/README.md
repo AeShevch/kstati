@@ -1,26 +1,55 @@
 # Проверка первого OpenSpec change
 
-Дата: 2026-11-05. Среда: macOS, Swift 6.2.3 Command Line Tools. Xcode.app и iOS Simulator не установлены.
+Дата: 2026-11-06. Xcode 27.2, iOS 27.2 Simulator (iPhone 17e, `9E66650E-10CF-47C4-8FF7-D0D63B84C1BD`). Deployment target — iOS 17.0.
 
-## Выполнено
+## Результаты
 
-- `cd ios && swift test -j 1` — 10 Swift Testing тестов проходят с Command Line Tools. Покрыты инвариант оригинала, миграция/повторное открытие, пустой текст, идемпотентный capture ID (включая повторный Share с теми же байтами), целостность вложения, очистка осиротевшего файла, группы, FTS5, исправление и удаление, ошибка OCR и реальное локальное распознавание Vision на созданном тестом изображении. Первый вызов Vision занял около 52 секунд.
-- При компиляции Swift Testing из отдельного пакета Command Line Tools иногда печатает `Internal Error: DecodingError.dataCorrupted` для macro plugin. Последний полный запуск завершился с кодом 0: 10 из 10 тестов прошли. Набор нужно повторить на Xcode.
-- `cd ios && xcodegen generate --spec project.yml` — `Kstati.xcodeproj` создан.
-- `npx -y @fission-ai/openspec@1.16.0 validate establish-offline-memory-foundation --strict` — change валиден.
+| Проверка | Команда | Результат |
+| --- | --- | --- |
+| OpenSpec | `npx -y @fission-ai/openspec@1.16.0 validate establish-offline-memory-foundation --strict` | Change valid |
+| Swift unit/integration | `cd ios && swift test -j 1` | 11/11 тестов прошли |
+| Xcode targets | `xcodebuild -list -project ios/Kstati.xcodeproj` | App, Share Extension, UI tests и fixture host доступны |
+| Все targets | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' build` | BUILD SUCCEEDED |
+| UI | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' test` | 3 сценария прошли, условный тест ошибки записи пропущен, 0 ошибок |
+| Ошибка записи | Та же команда с `-only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure` после запрета записи в `originals` | Тест прошёл: ошибка показана, расширение осталось открытым |
 
-## Не проверено в этой среде
+`ShareFixtureHost` передаёт [тестовый PNG](Fixtures/appointment.png) через системное меню «Поделиться». `testShareImageFromAnotherApp` проверяет сохранение в расширении, оригинал, OCR `12:30`, исправление, поиск, пустой результат и перезапуск. `testEditKeepsOriginalAndDeletingGroupKeepsMemory` проверяет исходный текст, правку, две группы и удаление одной из них. `testManualCaptureSearchAndReopen` проверяет ручной захват.
 
-- `xcodebuild -list -project ios/Kstati.xcodeproj` — завершился ошибкой `tool 'xcodebuild' requires Xcode, but active developer directory '/Library/Developer/CommandLineTools' is a command line tools instance`.
-- Сборка app, Share Extension и UI tests для iOS Simulator, передача скриншота из другого приложения без сети, состояние после перезапуска и сообщение об ошибке записи в расширении. Нужен установленный Xcode с iOS Simulator.
-
-После установки Xcode выполнить из корня репозитория:
+Перед полным UI-прогоном используйте чистый симулятор и установите оба приложения. `ios/project.yml` — источник конфигурации Xcode:
 
 ```sh
 cd ios
 xcodegen generate --spec project.yml
-xcodebuild -list -project Kstati.xcodeproj
-xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,name=iPhone 16' build test
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' build
+xcrun simctl shutdown 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
+xcrun simctl erase 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
+xcrun simctl boot 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
+xcrun simctl bootstatus 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD -b
+xcrun simctl install 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD ~/Library/Developer/Xcode/DerivedData/Kstati-*/Build/Products/Debug-iphonesimulator/ShareFixtureHost.app
+xcrun simctl install 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD ~/Library/Developer/Xcode/DerivedData/Kstati-*/Build/Products/Debug-iphonesimulator/Kstati.app
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' test
 ```
 
-Для ручной проверки: отключить сеть в симуляторе, поделиться скриншотом в «Кстати», открыть запись, дождаться OCR, исправить текст, найти его поиском, открыть оригинал и повторить после перезапуска. Если App Group недоступна или запись невозможна, расширение должно показать ошибку и не закрыться с подтверждением.
+Отдельный UI-тест ошибки записи использует другую версию PNG, чтобы повторный capture ID не скрывал ошибку. После успешного Share-теста из корня репозитория:
+
+```sh
+xcrun simctl spawn 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD launchctl setenv KST_WRITE_FAILURE_TEST 1
+group_dir=$(xcrun simctl get_app_container 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD app.kstati.ios groups | awk '{print $2}')
+chmod 555 "$group_dir/originals"
+xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure test
+chmod 755 "$group_dir/originals"
+xcrun simctl spawn 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD launchctl unsetenv KST_WRITE_FAILURE_TEST
+```
+
+## Покрытие требований
+
+| Delta spec | Проверка |
+| --- | --- |
+| `memory-capture` | Текст, пустой ввод, повтор capture ID, целостность файла — Swift tests; Share Sheet и ошибка записи — UI tests |
+| `memory-records` | Оригинал, перезапуск, N:M группы, удаление — Swift и UI tests |
+| `memory-review` | Успешный и неуспешный Vision OCR, отклонение предложения, раздельное хранение предложения и подтверждения — Swift tests; карточка и правка — UI test |
+| `memory-search` | FTS5 после правки/удаления — Swift tests; поиск скриншота, пустой результат и открытие оригинала — UI test |
+
+## Оставшаяся проверка
+
+Приложение, расширение и fixture host не используют сетевые API; сохранение, OCR и поиск реализованы локально. Полный сценарий **не запускался при физически отключённой сети**: в установленном iOS 27.2 Simulator переключатель авиарежима отсутствует в Settings и Control Center. Поэтому задачи 2.3 и 5.1 остаются открытыми до прогона на iPhone или управляемом симуляторе с отключённой сетью. Остальные шаги этих задач прошли.

@@ -39,6 +39,21 @@ private struct FailingRecognizer: TextRecognizer {
     #expect(try repo.originalData(for: item.id) == bytes)
 }
 
+@Test func rejectingSuggestionKeepsOriginalWithoutConfirmedText() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let repo = try MemoryRepository(directory: directory)
+    let bytes = Data([4, 5, 6])
+    let item = try repo.saveImage(bytes, captureID: "ocr-rejected")
+    try OCRProcessor(recognizer: FixedRecognizer(result: "Неверное распознавание")).process(item.id, repository: repo)
+    try repo.confirmText("Подтверждение", for: item.id)
+    try repo.confirmText("", for: item.id)
+    #expect(try repo.item(id: item.id)?.confirmedText == nil)
+    #expect(try repo.item(id: item.id)?.suggestion?.value == "Неверное распознавание")
+    #expect(try repo.originalData(for: item.id) == bytes)
+    #expect(try repo.search("Подтверждение").isEmpty)
+}
+
 #if canImport(AppKit)
 @Test func visionRecognizesGeneratedImageLocally() throws {
     let image = NSImage(size: NSSize(width: 900, height: 220))

@@ -3,6 +3,10 @@ import UniformTypeIdentifiers
 import MemoryCore
 import MemoryPersistence
 
+private struct SendableItemProvider: @unchecked Sendable {
+    let value: NSItemProvider
+}
+
 final class ShareViewController: UIViewController {
     private let status = UILabel()
     private let saveButton = UIButton(type: .system)
@@ -41,18 +45,51 @@ final class ShareViewController: UIViewController {
         let identifier = provider.registeredTypeIdentifiers.first {
             UTType($0)?.conforms(to: .image) == true
         } ?? UTType.image.identifier
+        let sendableProvider = SendableItemProvider(value: provider)
         provider.loadDataRepresentation(forTypeIdentifier: identifier) { [weak self] data, error in
+            let imageData = data.flatMap { UIImage(data: $0) == nil ? nil : $0 }
+            let errorMessage = error?.localizedDescription
             DispatchQueue.main.async {
                 guard let self else { return }
-                if let data, !data.isEmpty {
-                    self.imageData = data
-                    self.status.text = "Изображение готово к сохранению"
-                    self.saveButton.isEnabled = true
+                if let imageData {
+                    self.setImageData(imageData)
                 } else {
-                    self.status.text = "Не удалось прочитать изображение: \(error?.localizedDescription ?? "нет данных")"
+                    self.loadDecodedImage(from: sendableProvider.value,
+                                          identifier: identifier, initialError: errorMessage)
                 }
             }
         }
+    }
+
+    private func loadDecodedImage(from provider: NSItemProvider, identifier: String, initialError: String?) {
+        provider.loadItem(forTypeIdentifier: identifier, options: nil) { [weak self] object, error in
+            let imageData: Data?
+            if let image = object as? UIImage {
+                imageData = image.pngData()
+            } else if let data = object as? Data {
+                imageData = UIImage(data: data)?.pngData()
+                    ?? (try? NSKeyedUnarchiver.unarchivedObject(ofClass: UIImage.self, from: data))?.pngData()
+            } else if let url = object as? URL, let data = try? Data(contentsOf: url) {
+                imageData = UIImage(data: data) == nil ? nil : data
+            } else {
+                imageData = nil
+            }
+            let errorMessage = error?.localizedDescription
+            DispatchQueue.main.async {
+                guard let self else { return }
+                if let imageData {
+                    self.setImageData(imageData)
+                } else {
+                    self.status.text = "Не удалось прочитать изображение: \(errorMessage ?? initialError ?? "неподдерживаемые данные")"
+                }
+            }
+        }
+    }
+
+    private func setImageData(_ data: Data) {
+        imageData = data
+        status.text = "Изображение готово к сохранению"
+        saveButton.isEnabled = true
     }
 
     @objc private func save() {

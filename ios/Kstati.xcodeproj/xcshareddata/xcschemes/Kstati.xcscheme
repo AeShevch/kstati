@@ -21,6 +21,20 @@
                ReferencedContainer = "container:Kstati.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AF0886349FB676D1C3D7991E"
+               BuildableName = "ShareFixtureHost.app"
+               BlueprintName = "ShareFixtureHost"
+               ReferencedContainer = "container:Kstati.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
