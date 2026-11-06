@@ -11,6 +11,7 @@
 | Xcode targets | `xcodebuild -list -project ios/Kstati.xcodeproj` | App, Share Extension, UI tests и fixture host доступны |
 | Все targets | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' build` | BUILD SUCCEEDED |
 | UI | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' test` | 3 сценария прошли, условный тест ошибки записи пропущен, 0 ошибок |
+| Офлайн UI | На чистом симуляторе при выключенном Wi-Fi Mac: `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -only-testing:KstatiUITests/KstatiUITests/testShareImageFromAnotherApp test` | 1 тест прошёл, 0 ошибок; Wi-Fi включён обратно после теста |
 | Ошибка записи | Та же команда с `-only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure` после запрета записи в `originals` | Тест прошёл: ошибка показана, расширение осталось открытым |
 
 `ShareFixtureHost` передаёт [тестовый PNG](Fixtures/appointment.png) через системное меню «Поделиться». `testShareImageFromAnotherApp` проверяет сохранение в расширении, оригинал, OCR `12:30`, исправление, поиск, пустой результат и перезапуск. `testEditKeepsOriginalAndDeletingGroupKeepsMemory` проверяет исходный текст, правку, две группы и удаление одной из них. `testManualCaptureSearchAndReopen` проверяет ручной захват.
@@ -50,6 +51,6 @@ xcrun simctl spawn 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD launchctl unsetenv KST_W
 | `memory-review` | Успешный и неуспешный Vision OCR, отклонение предложения, раздельное хранение предложения и подтверждения — Swift tests; карточка и правка — UI test |
 | `memory-search` | FTS5 после правки/удаления — Swift tests; поиск скриншота, пустой результат и открытие оригинала — UI test |
 
-## Оставшаяся проверка
+## Офлайн-прогон
 
-Приложение, расширение и fixture host не используют сетевые API; сохранение, OCR и поиск реализованы локально. Полный сценарий **не запускался при физически отключённой сети**: в установленном iOS 27.2 Simulator переключатель авиарежима отсутствует в Settings и Control Center. Поэтому задачи 2.3 и 5.1 остаются открытыми до прогона на iPhone или управляемом симуляторе с отключённой сетью. Остальные шаги этих задач прошли.
+Перед запуском целевого теста симулятор iPhone 17e был очищен, а `Kstati.app` и `ShareFixtureHost.app` установлены заново. Wi-Fi Mac (`en0`) был выключен на время `xcodebuild test` и включён обратно сразу после его завершения. Лог зафиксировал `Wi-Fi Power (en0): Off`, прохождение `testShareImageFromAnotherApp` за 57,806 с и `TEST SUCCEEDED`. Сценарий охватывает Share Extension, сохранение изображения, локальный OCR, исправление и поиск текста, открытие оригинала и перезапуск приложения. Проверка ошибки записи проведена отдельным UI-тестом, указанным выше. Все сценарии четырёх delta specs покрыты тестами, перечисленными в таблице покрытия.
