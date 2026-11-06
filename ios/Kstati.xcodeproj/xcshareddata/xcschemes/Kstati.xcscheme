@@ -42,7 +42,17 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
+      preferredScreenCaptureFormat = "screenshots"
       onlyGenerateCoverageForSpecifiedTargets = "NO">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:KstatiApp/Tests/TestPlans/Smoke.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            default = "YES"
+            reference = "container:KstatiApp/Tests/TestPlans/Full.xctestplan">
+         </TestPlanReference>
+      </TestPlans>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"

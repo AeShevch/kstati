@@ -14,6 +14,7 @@ struct GroupsView: View {
                     TextField("Название группы", text: $newName)
                         .accessibilityIdentifier("newGroupName")
                     Button("Создать") { store.createGroup(newName); newName = "" }
+                        .accessibilityIdentifier("createGroup")
                 }
                 ForEach(store.groups) { group in
                     HStack {
@@ -31,7 +32,7 @@ struct GroupsView: View {
                 }
             }
             .navigationTitle("Группы")
-            .toolbar { Button("Готово") { dismiss() } }
+            .toolbar { Button("Готово") { dismiss() }.accessibilityIdentifier("doneGroups") }
         }
     }
 }

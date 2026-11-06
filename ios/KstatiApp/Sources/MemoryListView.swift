@@ -34,6 +34,7 @@ struct MemoryListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Группы", systemImage: "folder") { managingGroups = true }
+                        .accessibilityIdentifier("manageGroups")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Добавить", systemImage: "plus") { adding = true }

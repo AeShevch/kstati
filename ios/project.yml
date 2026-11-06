@@ -22,7 +22,15 @@ schemes:
         ShareFixtureHost: all
     test:
       targets:
-        - KstatiUITests
+        - name: KstatiUITests
+          parallelizable: false
+      captureScreenshotsAutomatically: true
+      deleteScreenshotsWhenEachTestSucceeds: true
+      preferredScreenCaptureFormat: screenshots
+      testPlans:
+        - path: KstatiApp/Tests/TestPlans/Smoke.xctestplan
+        - path: KstatiApp/Tests/TestPlans/Full.xctestplan
+          defaultPlan: true
 targets:
   Kstati:
     type: application

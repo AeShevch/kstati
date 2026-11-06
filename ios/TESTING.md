@@ -16,35 +16,25 @@
 | Все targets | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' build` | BUILD SUCCEEDED |
 | UI | `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' test` | 3 сценария прошли, условный тест ошибки записи пропущен, 0 ошибок |
 | Офлайн UI | На чистом симуляторе при выключенном Wi-Fi Mac: `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -only-testing:KstatiUITests/KstatiUITests/testShareImageFromAnotherApp test` | 1 тест прошёл, 0 ошибок; Wi-Fi включён обратно после теста |
-| Ошибка записи | Та же команда с `-only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure` после запрета записи в `originals` | Тест прошёл: ошибка показана, расширение осталось открытым |
+| Ошибка записи | Исторический прогон с ручным запретом записи в `originals` | Тест прошёл; теперь выполняется автоматически в `Full` |
 
 `ShareFixtureHost` передаёт [тестовый PNG](KstatiApp/Tests/Fixtures/appointment.png) через системное меню «Поделиться». `testShareImageFromAnotherApp` проверяет сохранение в расширении, оригинал, OCR `12:30`, исправление, поиск, пустой результат и перезапуск. `testEditKeepsOriginalAndDeletingGroupKeepsMemory` проверяет исходный текст, правку, две группы и удаление одной из них. `testManualCaptureSearchAndReopen` проверяет ручной захват.
 
-Перед полным UI-прогоном используйте чистый симулятор и установите оба приложения. `ios/project.yml` — источник конфигурации Xcode:
+## Текущий E2E-набор
+
+`KstatiUITests` использует XCTest UI, Page Objects в `KstatiApp/Tests/UITests/Pages/` и тестовый host для системного Share Sheet. Каждый сценарий передаёт новый test ID приложению; debug-сборка очищает только файлы памяти в App Group до открытия БД. Повторный запуск в рамках сценария сохраняет запись. Сценарий ошибки записи использует debug-only переключатель; ручной `chmod` больше не нужен. UI-тесты выполняются последовательно из-за общей App Group.
+
+`Smoke` запускает сквозной Share-сценарий. `Full` запускает четыре сценария, включая ошибку записи. При падении Xcode сохраняет снимки и диагностику в `.xcresult`. Для iPhone 17e с iOS 27.2:
 
 ```sh
 cd ios
 xcodegen generate --spec project.yml
-xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' build
-xcrun simctl shutdown 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
-xcrun simctl erase 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
-xcrun simctl boot 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD
-xcrun simctl bootstatus 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD -b
-xcrun simctl install 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD ~/Library/Developer/Xcode/DerivedData/Kstati-*/Build/Products/Debug-iphonesimulator/ShareFixtureHost.app
-xcrun simctl install 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD ~/Library/Developer/Xcode/DerivedData/Kstati-*/Build/Products/Debug-iphonesimulator/Kstati.app
-xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' test
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -showTestPlans
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -testPlan Smoke -parallel-testing-enabled NO -resultBundlePath "/tmp/kstati-smoke-$(date +%s).xcresult" test
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -testPlan Full -parallel-testing-enabled NO -resultBundlePath "/tmp/kstati-full-$(date +%s).xcresult" test
 ```
 
-Отдельный UI-тест ошибки записи использует другую версию PNG, чтобы повторный capture ID не скрывал ошибку. После успешного Share-теста из корня репозитория:
-
-```sh
-xcrun simctl spawn 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD launchctl setenv KST_WRITE_FAILURE_TEST 1
-group_dir=$(xcrun simctl get_app_container 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD app.kstati.ios groups | awk '{print $2}')
-chmod 555 "$group_dir/originals"
-xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure test
-chmod 755 "$group_dir/originals"
-xcrun simctl spawn 9E66650E-10CF-47C4-8FF7-D0D63B84C1BD launchctl unsetenv KST_WRITE_FAILURE_TEST
-```
+Проверка 2026-11-06: `Smoke` — 1/1, `Full` — 4/4 без пропусков. `Full` прошёл второй раз подряд на том же симуляторе без очистки: 4/4. Release-сборка приложения и расширения не содержит тестовых переключателей.
 
 ## Покрытие требований
 

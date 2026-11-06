@@ -20,6 +20,7 @@ final class ShareViewController: UIViewController {
         status.numberOfLines = 0
         status.textAlignment = .center
         saveButton.setTitle("Сохранить в Кстати", for: .normal)
+        saveButton.accessibilityIdentifier = "saveShareImage"
         saveButton.isEnabled = false
         saveButton.addTarget(self, action: #selector(save), for: .touchUpInside)
         let stack = UIStackView(arrangedSubviews: [status, saveButton])
@@ -101,6 +102,11 @@ final class ShareViewController: UIViewController {
             guard let container = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.app.kstati.memory") else {
                 throw MemoryError.unavailableContainer
             }
+            #if DEBUG
+            if FileManager.default.fileExists(atPath: container.appendingPathComponent(".kstati-e2e-fail-write").path) {
+                throw NSError(domain: "KstatiE2ETest", code: 1, userInfo: [NSLocalizedDescriptionKey: "Тестовая ошибка записи"])
+            }
+            #endif
             let repository = try MemoryRepository(directory: container)
             try repository.saveImage(imageData, captureID: ShareCaptureID.forImage(imageData))
             status.text = "Сохранено локально"

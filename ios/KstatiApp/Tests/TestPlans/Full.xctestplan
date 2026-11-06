@@ -1,0 +1,21 @@
+{
+  "configurations" : [
+    {
+      "id" : "3605A20D-F913-447D-829B-810BA3093ECC",
+      "name" : "Default",
+      "options" : {}
+    }
+  ],
+  "defaultOptions" : {},
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:Kstati.xcodeproj",
+        "identifier" : "B497062D94B724A08FABDC3C",
+        "name" : "KstatiUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
