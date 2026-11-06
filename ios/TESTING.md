@@ -36,6 +36,15 @@ xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS S
 
 Проверка 2026-11-06: `Smoke` — 1/1, `Full` — 4/4 без пропусков. `Full` прошёл второй раз подряд на том же симуляторе без очистки: 4/4. Release-сборка приложения и расширения не содержит тестовых переключателей.
 
+## Формат Swift
+
+Используется `xcrun swift-format` 6.4.4 из Xcode 27.2. Запускать из корня репозитория; команды охватывают все собственные Swift-файлы в `ios/`, включая `ios/Package.swift`. Первая команда изменяет файлы, вторая только проверяет их и завершается с ошибкой при нарушении формата.
+
+```sh
+rg --files -0 ios -g '*.swift' | xargs -0 xcrun swift-format format --in-place
+rg --files -0 ios -g '*.swift' | xargs -0 xcrun swift-format lint --strict
+```
+
 ## Покрытие требований
 
 | Delta spec | Проверка |
