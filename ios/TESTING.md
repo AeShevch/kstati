@@ -1,5 +1,9 @@
 # Проверка первого OpenSpec change
 
+## Baseline перед реорганизацией iOS-кода
+
+На 2026-11-06: Apple Swift 6.4.2, `swift-format` 6.4.4, XcodeGen 2.46.0, Xcode 27.2. SwiftPM содержит `MemoryCore`, `MemoryPersistence`, `MemoryOCR` и соответствующие test targets; `cd ios && swift test -j 1` завершился успешно: 6 + 4 + 1 = 11 тестов. `xcodebuild -list -project ios/Kstati.xcodeproj` показывает app, Share Extension, UI-test target и fixture host. Исходный UI-набор содержит `testShareImageFromAnotherApp`, `testEditKeepsOriginalAndDeletingGroupKeepsMemory`, `testManualCaptureSearchAndReopen` и условный `testShareReportsWriteFailure`; результаты предыдущего полного прогона приведены ниже.
+
 Дата: 2026-11-06. Xcode 27.2, iOS 27.2 Simulator (iPhone 17e, `9E66650E-10CF-47C4-8FF7-D0D63B84C1BD`). Deployment target — iOS 17.0.
 
 ## Результаты
@@ -14,7 +18,7 @@
 | Офлайн UI | На чистом симуляторе при выключенном Wi-Fi Mac: `xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,id=9E66650E-10CF-47C4-8FF7-D0D63B84C1BD' -only-testing:KstatiUITests/KstatiUITests/testShareImageFromAnotherApp test` | 1 тест прошёл, 0 ошибок; Wi-Fi включён обратно после теста |
 | Ошибка записи | Та же команда с `-only-testing:KstatiUITests/KstatiUITests/testShareReportsWriteFailure` после запрета записи в `originals` | Тест прошёл: ошибка показана, расширение осталось открытым |
 
-`ShareFixtureHost` передаёт [тестовый PNG](Fixtures/appointment.png) через системное меню «Поделиться». `testShareImageFromAnotherApp` проверяет сохранение в расширении, оригинал, OCR `12:30`, исправление, поиск, пустой результат и перезапуск. `testEditKeepsOriginalAndDeletingGroupKeepsMemory` проверяет исходный текст, правку, две группы и удаление одной из них. `testManualCaptureSearchAndReopen` проверяет ручной захват.
+`ShareFixtureHost` передаёт [тестовый PNG](KstatiApp/Tests/Fixtures/appointment.png) через системное меню «Поделиться». `testShareImageFromAnotherApp` проверяет сохранение в расширении, оригинал, OCR `12:30`, исправление, поиск, пустой результат и перезапуск. `testEditKeepsOriginalAndDeletingGroupKeepsMemory` проверяет исходный текст, правку, две группы и удаление одной из них. `testManualCaptureSearchAndReopen` проверяет ручной захват.
 
 Перед полным UI-прогоном используйте чистый симулятор и установите оба приложения. `ios/project.yml` — источник конфигурации Xcode:
 

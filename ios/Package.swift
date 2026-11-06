@@ -14,11 +14,11 @@ let package = Package(
         .package(url: "https://github.com/swiftlang/swift-testing.git", exact: "6.2.3"),
     ],
     targets: [
-        .target(name: "MemoryCore", path: "MemoryCore"),
-        .target(name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")], path: "MemoryPersistence"),
-        .target(name: "MemoryOCR", dependencies: ["MemoryCore", "MemoryPersistence"], path: "MemoryOCR"),
-        .testTarget(name: "MemoryCoreTests", dependencies: ["MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "Tests/MemoryCoreTests"),
-        .testTarget(name: "MemoryPersistenceTests", dependencies: ["MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "Tests/MemoryPersistenceTests"),
-        .testTarget(name: "MemoryOCRTests", dependencies: ["MemoryOCR", "MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "Tests/MemoryOCRTests"),
+        .target(name: "MemoryCore", path: "MemoryCore/Sources"),
+        .target(name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")], path: "MemoryPersistence/Sources"),
+        .target(name: "MemoryOCR", dependencies: ["MemoryCore", "MemoryPersistence"], path: "MemoryOCR/Sources"),
+        .testTarget(name: "MemoryCoreTests", dependencies: ["MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryCore/Tests"),
+        .testTarget(name: "MemoryPersistenceTests", dependencies: ["MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryPersistence/Tests"),
+        .testTarget(name: "MemoryOCRTests", dependencies: ["MemoryOCR", "MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")], path: "MemoryOCR/Tests"),
     ]
 )

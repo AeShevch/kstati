@@ -27,7 +27,7 @@ targets:
   Kstati:
     type: application
     platform: iOS
-    sources: [KstatiApp]
+    sources: [KstatiApp/Sources]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.kstati.ios
@@ -46,7 +46,7 @@ targets:
   KstatiShareExtension:
     type: app-extension
     platform: iOS
-    sources: [KstatiShareExtension]
+    sources: [KstatiShareExtension/Sources]
     info:
       path: KstatiShareExtension/Info.plist
       properties:
@@ -69,7 +69,7 @@ targets:
   KstatiUITests:
     type: bundle.ui-testing
     platform: iOS
-    sources: [Tests/UITests]
+    sources: [KstatiApp/Tests/UITests]
     dependencies:
       - target: Kstati
     settings:
@@ -79,8 +79,8 @@ targets:
     type: application
     platform: iOS
     sources:
-      - Tests/FixtureHost
-      - path: Tests/Fixtures/appointment.png
+      - KstatiApp/Tests/FixtureHost
+      - path: KstatiApp/Tests/Fixtures/appointment.png
         type: file
     settings:
       base:

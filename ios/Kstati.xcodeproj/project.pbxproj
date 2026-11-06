@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0119A1F32EA7A42D9C7C35EF /* MemoryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDAC61241077C389273FF73 /* MemoryViews.swift */; };
 		10FDA2FFCF4A94FE896BBEFA /* MemoryPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = BC9752D92291E24E4DC83A03 /* MemoryPersistence */; };
+		15F67CE53E2F05EA0780FEFD /* KstatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B3B3D5F411955889120E14 /* KstatiApp.swift */; };
 		3C557E279F9450A4C258796E /* KstatiUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */; };
 		4988AB16D3BAB71CB78425B7 /* appointment.png in Resources */ = {isa = PBXBuildFile; fileRef = 8D97C576F63277E414D39160 /* appointment.png */; };
 		4A8242DAADFB1A9132769C74 /* ShareFixtureHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653019229B98C7B7571F04D /* ShareFixtureHost.swift */; };
+		60DA6E89D7EA7676845BAE2A /* MemoryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2806FB55E0E33891D2512C /* MemoryViews.swift */; };
 		61AED2EAB50950C775ECAA48 /* MemoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC2CB9F96D1E0CFE066ED3B /* MemoryCore */; };
 		6449EBC4F515CB94BBD17494 /* KstatiShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		7287E7505A5CD58BFBA53A11 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */; };
-		9FCBB462CF1404F486FD201B /* KstatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A139012724A8FAF359E4BDD0 /* KstatiApp.swift */; };
+		9002F84F0B2819C6F344AA5A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D0E839649EF594DC1A06706 /* ShareViewController.swift */; };
 		B0A44D74E7243DE91C94B166 /* MemoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 77526D0C32F0A49AA6613468 /* MemoryCore */; };
 		C0F5345A96982B5908488C7D /* MemoryOCR in Frameworks */ = {isa = PBXBuildFile; productRef = 4158684B6A81369F00B73C11 /* MemoryOCR */; };
 		EF02C690C34ECA580EF79D37 /* MemoryPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = BE36173BA8BCFB606BC0B906 /* MemoryPersistence */; };
@@ -53,17 +53,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		39B3B3D5F411955889120E14 /* KstatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiApp.swift; sourceTree = "<group>"; };
+		3D0E839649EF594DC1A06706 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		521A55E7D12039BE3E145608 /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = .; sourceTree = SOURCE_ROOT; };
-		5850C5FB8C91F769613A734C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		69046E554F46E2F34E68F995 /* Kstati.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kstati.entitlements; sourceTree = "<group>"; };
 		7144B7ACF48C03C4148DD01B /* ShareFixtureHost.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ShareFixtureHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = KstatiShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D97C576F63277E414D39160 /* appointment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appointment.png; sourceTree = "<group>"; };
-		99EF35E04B1D85B529B5F0A3 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
-		A139012724A8FAF359E4BDD0 /* KstatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiApp.swift; sourceTree = "<group>"; };
+		CB2806FB55E0E33891D2512C /* MemoryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViews.swift; sourceTree = "<group>"; };
 		D653019229B98C7B7571F04D /* ShareFixtureHost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFixtureHost.swift; sourceTree = "<group>"; };
-		EDDAC61241077C389273FF73 /* MemoryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryViews.swift; sourceTree = "<group>"; };
 		F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiUITests.swift; sourceTree = "<group>"; };
 		F7F14308A929C05A700A1D6A /* KstatiUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KstatiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAF7A92C5EC287A86B7F9B57 /* Kstati.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Kstati.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,7 +103,7 @@
 				8D97C576F63277E414D39160 /* appointment.png */,
 			);
 			name = Fixtures;
-			path = Tests/Fixtures;
+			path = KstatiApp/Tests/Fixtures;
 			sourceTree = "<group>";
 		};
 		96EA57B0927D5F54AB59CCC4 /* Products */ = {
@@ -120,34 +117,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		980AE5FBC4A9CD60591CF168 /* KstatiShareExtension */ = {
-			isa = PBXGroup;
-			children = (
-				5850C5FB8C91F769613A734C /* Info.plist */,
-				99EF35E04B1D85B529B5F0A3 /* Share.entitlements */,
-				18DE863ACAB7C42AEF59C86B /* ShareViewController.swift */,
-			);
-			path = KstatiShareExtension;
-			sourceTree = "<group>";
-		};
-		A009886C7A521ED972000D13 /* KstatiApp */ = {
-			isa = PBXGroup;
-			children = (
-				69046E554F46E2F34E68F995 /* Kstati.entitlements */,
-				A139012724A8FAF359E4BDD0 /* KstatiApp.swift */,
-				EDDAC61241077C389273FF73 /* MemoryViews.swift */,
-			);
-			path = KstatiApp;
-			sourceTree = "<group>";
-		};
 		A1B3C85E2FE30FE88E1799A0 = {
 			isa = PBXGroup;
 			children = (
 				FD52D4FB227D3DA60C0D6B03 /* FixtureHost */,
 				8C9C529C1E31F3F1CE96BA41 /* Fixtures */,
-				A009886C7A521ED972000D13 /* KstatiApp */,
-				980AE5FBC4A9CD60591CF168 /* KstatiShareExtension */,
 				2F182B3193AC05DAB999DCF9 /* Packages */,
+				E5AB7429695B1F4AA912A11F /* Sources */,
+				D11B3ECDD2AB8286638AD929 /* Sources */,
 				BCFEFDD48820844D2563F36C /* UITests */,
 				96EA57B0927D5F54AB59CCC4 /* Products */,
 			);
@@ -159,7 +136,26 @@
 				F4AA86A4B4D4DA3348D57492 /* KstatiUITests.swift */,
 			);
 			name = UITests;
-			path = Tests/UITests;
+			path = KstatiApp/Tests/UITests;
+			sourceTree = "<group>";
+		};
+		D11B3ECDD2AB8286638AD929 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				3D0E839649EF594DC1A06706 /* ShareViewController.swift */,
+			);
+			name = Sources;
+			path = KstatiShareExtension/Sources;
+			sourceTree = "<group>";
+		};
+		E5AB7429695B1F4AA912A11F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				39B3B3D5F411955889120E14 /* KstatiApp.swift */,
+				CB2806FB55E0E33891D2512C /* MemoryViews.swift */,
+			);
+			name = Sources;
+			path = KstatiApp/Sources;
 			sourceTree = "<group>";
 		};
 		FD52D4FB227D3DA60C0D6B03 /* FixtureHost */ = {
@@ -168,7 +164,7 @@
 				D653019229B98C7B7571F04D /* ShareFixtureHost.swift */,
 			);
 			name = FixtureHost;
-			path = Tests/FixtureHost;
+			path = KstatiApp/Tests/FixtureHost;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,8 +314,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9FCBB462CF1404F486FD201B /* KstatiApp.swift in Sources */,
-				0119A1F32EA7A42D9C7C35EF /* MemoryViews.swift in Sources */,
+				15F67CE53E2F05EA0780FEFD /* KstatiApp.swift in Sources */,
+				60DA6E89D7EA7676845BAE2A /* MemoryViews.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,7 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7287E7505A5CD58BFBA53A11 /* ShareViewController.swift in Sources */,
+				9002F84F0B2819C6F344AA5A /* ShareViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

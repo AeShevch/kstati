@@ -2,10 +2,10 @@
 
 ## 1. Структура модулей и тестов
 
-- [ ] 1.1 Зафиксировать исходный список SwiftPM/Xcode targets, 11 Swift-тестов и UI-сценарии из `ios/Tests/README.md`; проверить `swift --version`, `xcrun swift-format --version` и `xcodegen --version` перед переносом.
-- [ ] 1.2 Перенести исходники и тесты `MemoryCore`, `MemoryPersistence`, `MemoryOCR` в соседние `Sources/` и `Tests/`, обновить явные paths в `ios/Package.swift`; проверить `cd ios && swift test -j 1` и прежний список тестов.
-- [ ] 1.3 Перенести исходники приложения и расширения, UI-тесты, fixture host и PNG в каталоги, указанные в design; обновить `ios/project.yml`, сгенерировать проект и проверить `xcodebuild -list -project ios/Kstati.xcodeproj`, сборку всех targets и доступность PNG в fixture host.
-- [ ] 1.4 Перенести исторический отчёт в `ios/TESTING.md`, обновить ссылки и пути к fixture в README; проверить, что все локальные ссылки разрешаются и команды используют актуальные пути.
+- [x] 1.1 Зафиксировать исходный список SwiftPM/Xcode targets, 11 Swift-тестов и UI-сценарии из `ios/Tests/README.md`; проверить `swift --version`, `xcrun swift-format --version` и `xcodegen --version` перед переносом.
+- [x] 1.2 Перенести исходники и тесты `MemoryCore`, `MemoryPersistence`, `MemoryOCR` в соседние `Sources/` и `Tests/`, обновить явные paths в `ios/Package.swift`; проверить `cd ios && swift test -j 1` и прежний список тестов.
+- [x] 1.3 Перенести исходники приложения и расширения, UI-тесты, fixture host и PNG в каталоги, указанные в design; обновить `ios/project.yml`, сгенерировать проект и проверить `xcodebuild -list -project ios/Kstati.xcodeproj`, сборку всех targets и доступность PNG в fixture host.
+- [x] 1.4 Перенести исторический отчёт в `ios/TESTING.md`, обновить ссылки и пути к fixture в README; проверить, что все локальные ссылки разрешаются и команды используют актуальные пути.
 
 ## 2. Один основной тип на файл
 
