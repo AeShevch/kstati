@@ -60,11 +60,15 @@ private struct FailingRecognizer: TextRecognizer {
 
 #if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
     @Test func visionRecognizesGeneratedImageLocally() throws {
-        let context = try #require(
-            CGContext(
+        guard
+            let context = CGContext(
                 data: nil, width: 900, height: 220, bitsPerComponent: 8, bytesPerRow: 0,
                 space: CGColorSpaceCreateDeviceRGB(),
-                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        else {
+            Issue.record("CGContext creation failed")
+            return
+        }
         context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
         context.fill(CGRect(x: 0, y: 0, width: 900, height: 220))
         let font = CTFontCreateWithName("Helvetica-Bold" as CFString, 90, nil)
@@ -76,12 +80,26 @@ private struct FailingRecognizer: TextRecognizer {
         let line = CTLineCreateWithAttributedString(NSAttributedString(string: "HELLO 123", attributes: attributes))
         context.textPosition = CGPoint(x: 40, y: 55)
         CTLineDraw(line, context)
-        let image = try #require(context.makeImage())
+        guard let image = context.makeImage() else {
+            Issue.record("CGImage creation failed")
+            return
+        }
         let output = NSMutableData()
-        let destination = try #require(CGImageDestinationCreateWithData(output, "public.png" as CFString, 1, nil))
+        guard let destination = CGImageDestinationCreateWithData(output, "public.png" as CFString, 1, nil)
+        else {
+            Issue.record("PNG destination creation failed")
+            return
+        }
         CGImageDestinationAddImage(destination, image, nil)
-        #expect(CGImageDestinationFinalize(destination))
+        guard CGImageDestinationFinalize(destination) else {
+            Issue.record("PNG encoding failed")
+            return
+        }
         let png = output as Data
-        #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
+        do {
+            #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
+        } catch {
+            Issue.record("Vision recognition failed: \(type(of: error)): \(error)")
+        }
     }
 #endif
