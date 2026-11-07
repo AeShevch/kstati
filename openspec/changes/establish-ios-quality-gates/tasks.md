@@ -15,13 +15,13 @@
 ## 3. GitHub Actions
 
 - [x] 3.1 Добавить workflow для PR и `push main`: OpenSpec на Linux; общий локальный скрипт, Swift-тесты, сборка и `Smoke` на macOS; закрепить совместимые runner/Xcode/XcodeGen/SwiftLint, минимальные permissions и `concurrency`; проверить YAML через actionlint и команды локально.
-- [ ] 3.2 Добавить отдельный workflow `Full` для PR с label `run-full-e2e`, `push main` и `workflow_dispatch` после интеграции; обеспечить последовательный UI-запуск и сохранение `.xcresult` при сбое с коротким сроком хранения; проверить условия запуска actionlint и тестовым PR.
-- [ ] 3.3 В GitHub PR к ветке предыдущего change получить зелёные OpenSpec, формат/SwiftLint/Swift tests/build и `Smoke`; поставить label `run-full-e2e` и получить `Full` 4/4; при сбое изучить логи/`xcresult`, исправить runner или workflow и повторить проверки.
+- [x] 3.2 Добавить отдельный workflow `Full` для PR с label `run-full-e2e`, `push main` и `workflow_dispatch` после интеграции; обеспечить последовательный UI-запуск и сохранение `.xcresult` при сбое с коротким сроком хранения; проверить условия запуска actionlint и тестовым PR.
+- [x] 3.3 В GitHub PR к ветке предыдущего change получить зелёные OpenSpec, формат/SwiftLint/Swift tests/build и `Smoke`; поставить label `run-full-e2e` и получить `Full` 4/4; при сбое изучить логи/`xcresult`, исправить runner или workflow и повторить проверки.
 
 ## 4. Интеграционная проверка
 
-- [ ] 4.1 Проверить, что скрипт и workflow вызывают одинаковые команды, `project.pbxproj` не меняется при генерации, `git diff --check` и `openspec validate establish-ios-quality-gates --strict` проходят; зафиксировать ссылки на успешные GitHub runs и результаты в `ios/TESTING.md`.
-- [ ] 4.2 Проверить diff на отсутствие изменений пользовательского поведения, API, SQL-миграций и продуктовых specs; сверить статус OpenSpec и чистоту рабочего каталога после коммита.
+- [x] 4.1 Проверить, что скрипт и workflow вызывают одинаковые команды, `project.pbxproj` не меняется при генерации, `git diff --check` и `openspec validate establish-ios-quality-gates --strict` проходят; зафиксировать ссылки на успешные GitHub runs и результаты в `ios/TESTING.md`.
+- [x] 4.2 Проверить diff на отсутствие изменений пользовательского поведения, API, SQL-миграций и продуктовых specs; сверить статус OpenSpec и чистоту рабочего каталога после коммита.
 
 ## Workflow follow-up
 

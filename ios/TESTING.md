@@ -19,6 +19,8 @@
 
 GitHub PR #1: [iOS PR checks, run 42356197869](https://github.com/AeShevch/kstati/actions/runs/42356197869) — OpenSpec и actionlint прошли; формат, SwiftLint, десять Swift-тестов, сборка и `Smoke` 1/1 прошли на `xcode-27`. Один SwiftPM-тест Vision отмечен пропущенным по указанной выше причине; распознавание OCR проверено в `Smoke`.
 
+Итоговые прогоны на коммите `4ae52ed`: [PR checks](https://github.com/AeShevch/kstati/actions/runs/42358843698) — OpenSpec, actionlint, формат, SwiftLint, десять Swift-тестов, сборка и `Smoke` 1/1 прошли; [Full E2E](https://github.com/AeShevch/kstati/actions/runs/42358843686) — `Full` 4/4 без ошибок и пропусков, включая сценарий ошибки записи. Единственный пропуск в SwiftPM — описанный выше macOS Vision-тест; тот же реальный OCR проверен в обоих UI-планах на iOS Simulator.
+
 ## Baseline перед реорганизацией iOS-кода
 
 На 2026-11-06: Apple Swift 6.4.2, `swift-format` 6.4.4, XcodeGen 2.46.0, Xcode 27.2. SwiftPM содержит `MemoryCore`, `MemoryPersistence`, `MemoryOCR` и соответствующие test targets; `cd ios && swift test -j 1` завершился успешно: 6 + 4 + 1 = 11 тестов. `xcodebuild -list -project ios/Kstati.xcodeproj` показывает app, Share Extension, UI-test target и fixture host. Исходный UI-набор содержит `testShareImageFromAnotherApp`, `testEditKeepsOriginalAndDeletingGroupKeepsMemory`, `testManualCaptureSearchAndReopen` и условный `testShareReportsWriteFailure`; результаты предыдущего полного прогона приведены ниже.
