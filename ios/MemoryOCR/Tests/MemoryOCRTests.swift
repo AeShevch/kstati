@@ -59,7 +59,11 @@ private struct FailingRecognizer: TextRecognizer {
 }
 
 #if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
-    @Test func visionRecognizesGeneratedImageLocally() throws {
+    @Test(
+        .disabled(
+            if: ProcessInfo.processInfo.environment["CI"] == "true",
+            "Vision returns nilError on the hosted macOS runner; Smoke E2E checks OCR in iOS Simulator"))
+    func visionRecognizesGeneratedImageLocally() throws {
         guard
             let context = CGContext(
                 data: nil, width: 900, height: 220, bitsPerComponent: 8, bytesPerRow: 0,
@@ -97,10 +101,7 @@ private struct FailingRecognizer: TextRecognizer {
         }
         let png = output as Data
         do {
-            #expect(
-                try VisionTextRecognizer().recognize(
-                    png, preferCPU: ProcessInfo.processInfo.environment["CI"] == "true"
-                ).contains("HELLO"))
+            #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
         } catch {
             Issue.record("Vision recognition failed: \(type(of: error)): \(error)")
         }

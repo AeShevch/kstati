@@ -13,6 +13,8 @@
 
 Скрипты работают и из `ios/` через `../scripts/`. `fast` проверяет Swift-формат, шесть правил SwiftLint, 11 Swift-тестов и воспроизводимость XcodeGen. `smoke` и `full` сначала выполняют `fast`, затем собирают приложение и запускают соответствующий последовательный E2E-план. Симулятор выбирается по имени и версии runtime, а не по UDID; при необходимости задайте `KSTATI_SIMULATOR_NAME` и `KSTATI_SIMULATOR_RUNTIME`. `xcresult` сохраняется в игнорируемый `.artifacts/` либо в `KSTATI_RESULT_DIR`.
 
+На GitHub-hosted macOS runner Vision возвращает `_GenericObjCError.nilError` при распознавании сгенерированного PNG в SwiftPM-тесте. Этот один платформенный тест явно помечен как пропущенный при `CI=true`; остальные десять Swift-тестов выполняются. `Smoke` в iOS Simulator проверяет реальный OCR через Share Extension. Локально Vision-тест выполняется вместе с остальными.
+
 Проверка 2026-11-07: `fast` из корня и `ios/` прошёл, рабочий каталог после прогона остался чистым. `smoke` — 1/1, `full` — 4/4 без пропусков; диагностические пакеты сохранены в `/tmp/kstati-quality-results/`.
 
 ## Baseline перед реорганизацией iOS-кода
