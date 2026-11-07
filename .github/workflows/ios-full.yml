@@ -1,0 +1,41 @@
+name: iOS Full E2E
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-full-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full:
+    if: github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'run-full-e2e')
+    runs-on: xcode-27
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
+      KSTATI_SKIP_HOSTED_MACOS_VISION_TEST: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned iOS tools
+        run: ./scripts/install-ios-tools.sh
+      - name: Format, lint, test, build and Full E2E
+        env:
+          KSTATI_RESULT_DIR: ${{ runner.temp }}/kstati-results
+        run: ./scripts/ios-checks.sh full
+      - name: Upload UI diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ios-full-${{ github.run_id }}
+          path: ${{ runner.temp }}/kstati-results/*.xcresult
+          if-no-files-found: ignore
+          retention-days: 3

@@ -1,0 +1,57 @@
+name: iOS PR checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ios-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  openspec:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate OpenSpec
+        run: |
+          npx -y @fission-ai/openspec@1.16.0 validate --all --strict --no-interactive
+          npx -y @fission-ai/openspec@1.16.0 validate --archived --strict --no-interactive
+      - name: Validate workflow syntax
+        run: |
+          curl --fail --location --silent --show-error --retry 3 \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
+            -o "$RUNNER_TEMP/actionlint.tar.gz"
+          echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  '"$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
+          "$RUNNER_TEMP/actionlint" .github/workflows/*.yml
+
+  ios:
+    runs-on: xcode-27
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer
+      KSTATI_SKIP_HOSTED_MACOS_VISION_TEST: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned iOS tools
+        run: ./scripts/install-ios-tools.sh
+      - name: Format, lint, test, build and Smoke E2E
+        env:
+          KSTATI_RESULT_DIR: ${{ runner.temp }}/kstati-results
+        run: ./scripts/ios-checks.sh smoke
+      - name: Upload UI diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ios-smoke-${{ github.run_id }}
+          path: ${{ runner.temp }}/kstati-results/*.xcresult
+          if-no-files-found: ignore
+          retention-days: 3

@@ -1,5 +1,26 @@
 # Проверка первого OpenSpec change
 
+## Единая проверка iOS
+
+Из корня репозитория установите закреплённые SwiftLint 0.65.1 и XcodeGen 2.46.0 без прав администратора. Установщик сверяет SHA-256 архивов и кладёт инструменты в игнорируемый каталог `.tools/`. Нужны Xcode 27.2 (`swift-format` 6.4.4), `python3`, `curl` и `unzip`. На текущем этапе GitHub CI использует runner `xcode-27`; локально нужен доступный iPhone 17e с iOS 27.2.
+
+```sh
+./scripts/install-ios-tools.sh
+./scripts/ios-checks.sh fast
+./scripts/ios-checks.sh smoke
+./scripts/ios-checks.sh full
+```
+
+Скрипты работают и из `ios/` через `../scripts/`. `fast` проверяет Swift-формат, шесть правил SwiftLint, 12 Swift-тестов и воспроизводимость XcodeGen. `smoke` и `full` сначала выполняют `fast`, дожидаются полной загрузки симулятора, затем собирают приложение и запускают соответствующий последовательный E2E-план. Симулятор выбирается по имени и версии runtime, а не по UDID; при необходимости задайте `KSTATI_SIMULATOR_NAME` и `KSTATI_SIMULATOR_RUNTIME`. `xcresult` сохраняется в игнорируемый `.artifacts/` либо в `KSTATI_RESULT_DIR`.
+
+На GitHub-hosted macOS runner Vision возвращает `_GenericObjCError.nilError` при распознавании сгенерированного PNG в SwiftPM-тесте. Этот один платформенный тест пропускается только при явном `KSTATI_SKIP_HOSTED_MACOS_VISION_TEST=1`, заданном в macOS workflow; остальные одиннадцать Swift-тестов выполняются. `Smoke` в iOS Simulator проверяет реальный OCR через Share Extension. Локально Vision-тест выполняется вместе с остальными, даже при `CI=true`.
+
+Проверка 2026-11-07: `fast` из корня и `ios/` прошёл, рабочий каталог после прогона остался чистым. `smoke` — 1/1, `full` — 4/4 без пропусков; диагностические пакеты сохранены в `/tmp/kstati-quality-results/`.
+
+GitHub PR #1: [iOS PR checks, run 42356197869](https://github.com/AeShevch/kstati/actions/runs/42356197869) — OpenSpec и actionlint прошли; формат, SwiftLint, десять Swift-тестов, сборка и `Smoke` 1/1 прошли на `xcode-27`. Один SwiftPM-тест Vision отмечен пропущенным по указанной выше причине; распознавание OCR проверено в `Smoke`.
+
+Итоговые прогоны на коммите `4ae52ed`: [PR checks](https://github.com/AeShevch/kstati/actions/runs/42358843698) — OpenSpec, actionlint, формат, SwiftLint, десять Swift-тестов, сборка и `Smoke` 1/1 прошли; [Full E2E](https://github.com/AeShevch/kstati/actions/runs/42358843686) — `Full` 4/4 без ошибок и пропусков, включая сценарий ошибки записи. Единственный пропуск в SwiftPM — описанный выше macOS Vision-тест; тот же реальный OCR проверен в обоих UI-планах на iOS Simulator.
+
 ## Baseline перед реорганизацией iOS-кода
 
 На 2026-11-06: Apple Swift 6.4.2, `swift-format` 6.4.4, XcodeGen 2.46.0, Xcode 27.2. SwiftPM содержит `MemoryCore`, `MemoryPersistence`, `MemoryOCR` и соответствующие test targets; `cd ios && swift test -j 1` завершился успешно: 6 + 4 + 1 = 11 тестов. `xcodebuild -list -project ios/Kstati.xcodeproj` показывает app, Share Extension, UI-test target и fixture host. Исходный UI-набор содержит `testShareImageFromAnotherApp`, `testEditKeepsOriginalAndDeletingGroupKeepsMemory`, `testManualCaptureSearchAndReopen` и условный `testShareReportsWriteFailure`; результаты предыдущего полного прогона приведены ниже.

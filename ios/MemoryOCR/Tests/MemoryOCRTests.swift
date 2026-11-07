@@ -5,8 +5,10 @@ import Testing
 
 @testable import MemoryOCR
 
-#if canImport(AppKit)
-    import AppKit
+#if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
+    import CoreGraphics
+    import CoreText
+    import ImageIO
 #endif
 
 private struct FixedRecognizer: TextRecognizer {
@@ -56,21 +58,52 @@ private struct FailingRecognizer: TextRecognizer {
     #expect(try repo.search("Подтверждение").isEmpty)
 }
 
-#if canImport(AppKit)
-    @Test func visionRecognizesGeneratedImageLocally() throws {
-        let image = NSImage(size: NSSize(width: 900, height: 220))
-        image.lockFocus()
-        NSColor.white.setFill()
-        NSRect(x: 0, y: 0, width: 900, height: 220).fill()
+#if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
+    @Test(
+        .disabled(
+            if: ProcessInfo.processInfo.environment["KSTATI_SKIP_HOSTED_MACOS_VISION_TEST"] == "1",
+            "Vision returns nilError on the hosted macOS runner; Smoke E2E checks OCR in iOS Simulator"))
+    func visionRecognizesGeneratedImageLocally() throws {
+        guard
+            let context = CGContext(
+                data: nil, width: 900, height: 220, bitsPerComponent: 8, bytesPerRow: 0,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)
+        else {
+            Issue.record("CGContext creation failed")
+            return
+        }
+        context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+        context.fill(CGRect(x: 0, y: 0, width: 900, height: 220))
+        let font = CTFontCreateWithName("Helvetica-Bold" as CFString, 90, nil)
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 90, weight: .bold),
-            .foregroundColor: NSColor.black,
+            NSAttributedString.Key(kCTFontAttributeName as String): font,
+            NSAttributedString.Key(kCTForegroundColorAttributeName as String): CGColor(
+                red: 0, green: 0, blue: 0, alpha: 1),
         ]
-        ("HELLO 123" as NSString).draw(at: NSPoint(x: 40, y: 55), withAttributes: attributes)
-        image.unlockFocus()
-        let tiff = try #require(image.tiffRepresentation)
-        let bitmap = try #require(NSBitmapImageRep(data: tiff))
-        let png = try #require(bitmap.representation(using: .png, properties: [:]))
-        #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
+        let line = CTLineCreateWithAttributedString(NSAttributedString(string: "HELLO 123", attributes: attributes))
+        context.textPosition = CGPoint(x: 40, y: 55)
+        CTLineDraw(line, context)
+        guard let image = context.makeImage() else {
+            Issue.record("CGImage creation failed")
+            return
+        }
+        let output = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(output, "public.png" as CFString, 1, nil)
+        else {
+            Issue.record("PNG destination creation failed")
+            return
+        }
+        CGImageDestinationAddImage(destination, image, nil)
+        guard CGImageDestinationFinalize(destination) else {
+            Issue.record("PNG encoding failed")
+            return
+        }
+        let png = output as Data
+        do {
+            #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
+        } catch {
+            Issue.record("Vision recognition failed: \(type(of: error)): \(error)")
+        }
     }
 #endif
