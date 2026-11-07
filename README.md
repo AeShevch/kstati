@@ -13,7 +13,7 @@
 
 ## Разработка iOS
 
-`ios/Package.swift` содержит общие модули `MemoryCore`, `MemoryPersistence`, `MemoryOCR`. Их тесты запускаются командой `cd ios && swift test -j 1`. `ios/project.yml` — источник конфигурации Xcode; `cd ios && xcodegen generate --spec project.yml` создаёт `Kstati.xcodeproj`. Проект включает приложение, Share Extension, UI-тесты и тестовый host для системного Share Sheet.
+`ios/Package.swift` содержит общие модули `MemoryCore`, `MemoryPersistence`, `MemoryOCR`. `ios/project.yml` — источник конфигурации Xcode; проект включает приложение, Share Extension, UI-тесты и тестовый host для системного Share Sheet. Для локальной проверки установите инструменты через `./scripts/install-ios-tools.sh` и запустите `./scripts/ios-checks.sh fast`; режимы `smoke` и `full` добавляют сквозные UI-тесты. Версии и результаты указаны в [инструкции тестирования](ios/TESTING.md).
 
 ## Источники
 

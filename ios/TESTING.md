@@ -1,5 +1,20 @@
 # Проверка первого OpenSpec change
 
+## Единая проверка iOS
+
+Из корня репозитория установите закреплённые SwiftLint 0.65.1 и XcodeGen 2.46.0 без прав администратора. Установщик сверяет SHA-256 архивов и кладёт инструменты в игнорируемый каталог `.tools/`. Нужны Xcode 27.2 (`swift-format` 6.4.4), `rg`, `python3`, `curl` и `unzip`. На текущем этапе GitHub CI использует runner `xcode-27`; локально нужен доступный iPhone 17e с iOS 27.2.
+
+```sh
+./scripts/install-ios-tools.sh
+./scripts/ios-checks.sh fast
+./scripts/ios-checks.sh smoke
+./scripts/ios-checks.sh full
+```
+
+Скрипты работают и из `ios/` через `../scripts/`. `fast` проверяет Swift-формат, шесть правил SwiftLint, 11 Swift-тестов и воспроизводимость XcodeGen. `smoke` и `full` сначала выполняют `fast`, затем собирают приложение и запускают соответствующий последовательный E2E-план. Симулятор выбирается по имени и версии runtime, а не по UDID; при необходимости задайте `KSTATI_SIMULATOR_NAME` и `KSTATI_SIMULATOR_RUNTIME`. `xcresult` сохраняется в игнорируемый `.artifacts/` либо в `KSTATI_RESULT_DIR`.
+
+Проверка 2026-11-07: `fast` из корня и `ios/` прошёл, рабочий каталог после прогона остался чистым. `smoke` — 1/1, `full` — 4/4 без пропусков; диагностические пакеты сохранены в `/tmp/kstati-quality-results/`.
+
 ## Baseline перед реорганизацией iOS-кода
 
 На 2026-11-06: Apple Swift 6.4.2, `swift-format` 6.4.4, XcodeGen 2.46.0, Xcode 27.2. SwiftPM содержит `MemoryCore`, `MemoryPersistence`, `MemoryOCR` и соответствующие test targets; `cd ios && swift test -j 1` завершился успешно: 6 + 4 + 1 = 11 тестов. `xcodebuild -list -project ios/Kstati.xcodeproj` показывает app, Share Extension, UI-test target и fixture host. Исходный UI-набор содержит `testShareImageFromAnotherApp`, `testEditKeepsOriginalAndDeletingGroupKeepsMemory`, `testManualCaptureSearchAndReopen` и условный `testShareReportsWriteFailure`; результаты предыдущего полного прогона приведены ниже.
