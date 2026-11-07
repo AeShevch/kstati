@@ -111,15 +111,6 @@ final class ShareViewController: UIViewController {
             else {
                 throw MemoryError.unavailableContainer
             }
-            #if DEBUG
-                if FileManager.default.fileExists(
-                    atPath: container.appendingPathComponent(".kstati-e2e-fail-write").path)
-                {
-                    throw NSError(
-                        domain: "KstatiE2ETest", code: 1,
-                        userInfo: [NSLocalizedDescriptionKey: "Тестовая ошибка записи"])
-                }
-            #endif
             let repository = try MemoryRepository(directory: container)
             try repository.saveImage(imageData, captureID: ShareCaptureID.forImage(imageData))
             status.text = "Сохранено локально"
