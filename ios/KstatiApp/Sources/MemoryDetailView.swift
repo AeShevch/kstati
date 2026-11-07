@@ -27,6 +27,12 @@ struct MemoryDetailView: View {
                         } else {
                             Text("Не удалось открыть оригинал")
                         }
+                    case .link(let address):
+                        Text(address).accessibilityIdentifier("originalURL")
+                        if let url = URL(string: address) {
+                            Link("Открыть страницу", destination: url)
+                                .accessibilityIdentifier("openOriginalLink")
+                        }
                     }
                 }
                 if let suggestion = item.suggestion?.value {

@@ -6,6 +6,8 @@ struct MemoryDetailPage {
 
     var originalImage: XCUIElement { app.images["originalImage"] }
     var originalText: XCUIElement { app.staticTexts["originalText"] }
+    var originalURL: XCUIElement { app.staticTexts["originalURL"] }
+    var openOriginalLink: XCUIElement { app.links["openOriginalLink"] }
     var ocrSuggestion: XCUIElement { app.staticTexts["ocrSuggestion"] }
     var confirmedTextEditor: XCUIElement { app.textFields["confirmedTextEditor"] }
 

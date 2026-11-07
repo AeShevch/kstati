@@ -65,6 +65,7 @@ targets:
           NSExtensionAttributes:
             NSExtensionActivationRule:
               NSExtensionActivationSupportsImageWithMaxCount: 1
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: app.kstati.ios.share
@@ -74,6 +75,8 @@ targets:
         product: MemoryCore
       - package: KstatiModules
         product: MemoryPersistence
+      - package: KstatiModules
+        product: ShareInput
   KstatiUITests:
     type: bundle.ui-testing
     platform: iOS

@@ -21,6 +21,8 @@ enum SharedMemory {
         let repository = try MemoryRepository(directory: container)
         #if DEBUG
             let arguments = ProcessInfo.processInfo.arguments
+            try repository.setLinkWriteFailureForTests(
+                arguments.contains("-KST_E2E_TEST_ID") && arguments.contains("-KST_E2E_FAIL_LINK_WRITE"))
             if arguments.contains("-KST_E2E_TEST_ID"), arguments.contains("-KST_E2E_FAIL_WRITE") {
                 try Data().write(to: failureMarker, options: .atomic)
                 try FileManager.default.setAttributes([.posixPermissions: 0o500], ofItemAtPath: originals.path)

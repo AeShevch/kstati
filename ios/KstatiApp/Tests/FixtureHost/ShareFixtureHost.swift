@@ -10,6 +10,7 @@ struct ShareFixtureHost: App {
 
 private struct FixtureView: View {
     @State private var sharing = false
+    @State private var sharingLink = false
     private let image: UIImage = {
         guard let url = Bundle.main.url(forResource: "appointment", withExtension: "png"),
             let data = try? Data(contentsOf: url),
@@ -28,17 +29,22 @@ private struct FixtureView: View {
             Image(uiImage: image).resizable().scaledToFit()
             Button("Поделиться снимком") { sharing = true }
                 .accessibilityIdentifier("shareFixtureImage")
+            Button("Поделиться ссылкой") { sharingLink = true }
+                .accessibilityIdentifier("shareFixtureLink")
         }
         .padding()
-        .sheet(isPresented: $sharing) { ActivitySheet(image: image) }
+        .sheet(isPresented: $sharing) { ActivitySheet(item: image) }
+        .sheet(isPresented: $sharingLink) {
+            ActivitySheet(item: URL(string: "https://example.com/article?topic=swift")!)
+        }
     }
 }
 
 private struct ActivitySheet: UIViewControllerRepresentable {
-    let image: UIImage
+    let item: Any
 
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [image], applicationActivities: nil)
+        UIActivityViewController(activityItems: [item], applicationActivities: nil)
     }
 
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
