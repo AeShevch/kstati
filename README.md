@@ -7,7 +7,7 @@
 1. Прочитать [дорожную карту](docs/ROADMAP.md) и [открытые решения](docs/OPEN_DECISIONS.md).
 2. Сверить [архитектурный baseline](openspec/architecture.md) и [реестр принятых ADR](openspec/adr/README.md).
 3. Проверить [текущие specs](openspec/specs/) и первый архивный OpenSpec change: [proposal](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/proposal.md) → [delta specs](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/specs) → [design](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/design.md) → [tasks](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/tasks.md).
-4. Результаты проверок описаны в [отчёте тестирования](ios/Tests/README.md).
+4. Результаты проверок описаны в [отчёте тестирования](ios/TESTING.md).
 
 ## Разработка iOS
 

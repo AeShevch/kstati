@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "C87DC420-32E5-4936-81C5-D9118D7982D6",
+      "name" : "Default",
+      "options" : {}
+    }
+  ],
+  "defaultOptions" : {},
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "selectedTests" : [
+        "ShareCaptureE2ETests/testShareImageFromAnotherApp()"
+      ],
+      "target" : {
+        "containerPath" : "container:Kstati.xcodeproj",
+        "identifier" : "B497062D94B724A08FABDC3C",
+        "name" : "KstatiUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
