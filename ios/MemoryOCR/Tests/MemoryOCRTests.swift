@@ -97,7 +97,10 @@ private struct FailingRecognizer: TextRecognizer {
         }
         let png = output as Data
         do {
-            #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
+            #expect(
+                try VisionTextRecognizer().recognize(
+                    png, preferCPU: ProcessInfo.processInfo.environment["CI"] == "true"
+                ).contains("HELLO"))
         } catch {
             Issue.record("Vision recognition failed: \(type(of: error)): \(error)")
         }
