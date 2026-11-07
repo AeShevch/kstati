@@ -61,7 +61,7 @@ private struct FailingRecognizer: TextRecognizer {
 #if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
     @Test(
         .disabled(
-            if: ProcessInfo.processInfo.environment["CI"] == "true",
+            if: ProcessInfo.processInfo.environment["KSTATI_SKIP_HOSTED_MACOS_VISION_TEST"] == "1",
             "Vision returns nilError on the hosted macOS runner; Smoke E2E checks OCR in iOS Simulator"))
     func visionRecognizesGeneratedImageLocally() throws {
         guard
