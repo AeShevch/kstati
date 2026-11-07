@@ -58,8 +58,16 @@ private struct FailingRecognizer: TextRecognizer {
 
 #if canImport(AppKit)
     @Test func visionRecognizesGeneratedImageLocally() throws {
-        let image = NSImage(size: NSSize(width: 900, height: 220))
-        image.lockFocus()
+        let bitmap = try #require(
+            NSBitmapImageRep(
+                bitmapDataPlanes: nil, pixelsWide: 900, pixelsHigh: 220, bitsPerSample: 8,
+                samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB,
+                bytesPerRow: 0, bitsPerPixel: 0),
+            "Не удалось создать bitmap для OCR-теста")
+        let context = try #require(NSGraphicsContext(bitmapImageRep: bitmap), "Не удалось создать графический контекст")
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = context
+        defer { NSGraphicsContext.restoreGraphicsState() }
         NSColor.white.setFill()
         NSRect(x: 0, y: 0, width: 900, height: 220).fill()
         let attributes: [NSAttributedString.Key: Any] = [
@@ -67,10 +75,8 @@ private struct FailingRecognizer: TextRecognizer {
             .foregroundColor: NSColor.black,
         ]
         ("HELLO 123" as NSString).draw(at: NSPoint(x: 40, y: 55), withAttributes: attributes)
-        image.unlockFocus()
-        let tiff = try #require(image.tiffRepresentation)
-        let bitmap = try #require(NSBitmapImageRep(data: tiff))
-        let png = try #require(bitmap.representation(using: .png, properties: [:]))
+        context.flushGraphics()
+        let png = try #require(bitmap.representation(using: .png, properties: [:]), "Не удалось создать PNG")
         #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
     }
 #endif
