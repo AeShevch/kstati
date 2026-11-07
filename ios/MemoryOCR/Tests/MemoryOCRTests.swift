@@ -5,8 +5,10 @@ import Testing
 
 @testable import MemoryOCR
 
-#if canImport(AppKit)
-    import AppKit
+#if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
+    import CoreGraphics
+    import CoreText
+    import ImageIO
 #endif
 
 private struct FixedRecognizer: TextRecognizer {
@@ -56,27 +58,30 @@ private struct FailingRecognizer: TextRecognizer {
     #expect(try repo.search("Подтверждение").isEmpty)
 }
 
-#if canImport(AppKit)
+#if canImport(CoreGraphics) && canImport(CoreText) && canImport(ImageIO)
     @Test func visionRecognizesGeneratedImageLocally() throws {
-        let bitmap = try #require(
-            NSBitmapImageRep(
-                bitmapDataPlanes: nil, pixelsWide: 900, pixelsHigh: 220, bitsPerSample: 8,
-                samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB,
-                bytesPerRow: 0, bitsPerPixel: 0),
-            "Не удалось создать bitmap для OCR-теста")
-        let context = try #require(NSGraphicsContext(bitmapImageRep: bitmap), "Не удалось создать графический контекст")
-        NSGraphicsContext.saveGraphicsState()
-        NSGraphicsContext.current = context
-        defer { NSGraphicsContext.restoreGraphicsState() }
-        NSColor.white.setFill()
-        NSRect(x: 0, y: 0, width: 900, height: 220).fill()
+        let context = try #require(
+            CGContext(
+                data: nil, width: 900, height: 220, bitsPerComponent: 8, bytesPerRow: 0,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+        context.setFillColor(CGColor(red: 1, green: 1, blue: 1, alpha: 1))
+        context.fill(CGRect(x: 0, y: 0, width: 900, height: 220))
+        let font = CTFontCreateWithName("Helvetica-Bold" as CFString, 90, nil)
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: NSFont.systemFont(ofSize: 90, weight: .bold),
-            .foregroundColor: NSColor.black,
+            NSAttributedString.Key(kCTFontAttributeName as String): font,
+            NSAttributedString.Key(kCTForegroundColorAttributeName as String): CGColor(
+                red: 0, green: 0, blue: 0, alpha: 1),
         ]
-        ("HELLO 123" as NSString).draw(at: NSPoint(x: 40, y: 55), withAttributes: attributes)
-        context.flushGraphics()
-        let png = try #require(bitmap.representation(using: .png, properties: [:]), "Не удалось создать PNG")
+        let line = CTLineCreateWithAttributedString(NSAttributedString(string: "HELLO 123", attributes: attributes))
+        context.textPosition = CGPoint(x: 40, y: 55)
+        CTLineDraw(line, context)
+        let image = try #require(context.makeImage())
+        let output = NSMutableData()
+        let destination = try #require(CGImageDestinationCreateWithData(output, "public.png" as CFString, 1, nil))
+        CGImageDestinationAddImage(destination, image, nil)
+        #expect(CGImageDestinationFinalize(destination))
+        let png = output as Data
         #expect(try VisionTextRecognizer().recognize(png).contains("HELLO"))
     }
 #endif
