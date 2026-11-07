@@ -9,7 +9,7 @@ case "$mode" in
 esac
 
 export PATH="$repo_root/.tools/bin:$repo_root/.tools/xcodegen/bin:$PATH"
-for tool in swift xcrun xcodebuild xcodegen swiftlint git python3 rg; do
+for tool in swift xcrun xcodebuild xcodegen swiftlint git python3; do
     command -v "$tool" >/dev/null || { echo "Missing tool: $tool" >&2; exit 1; }
 done
 [[ "$(swiftlint version)" == 0.65.1 ]] || { echo "SwiftLint 0.65.1 required" >&2; exit 1; }
@@ -20,7 +20,7 @@ done
 echo "Xcode: $(xcodebuild -version | tr '\n' ' ')"
 echo "SwiftLint: $(swiftlint version); XcodeGen: $(xcodegen --version)"
 cd "$repo_root"
-rg --files -0 ios -g '*.swift' | xargs -0 xcrun swift-format lint --strict
+git ls-files -z -- 'ios/*.swift' | xargs -0 xcrun swift-format lint --strict
 swiftlint lint --config .swiftlint.yml --strict --no-cache --quiet
 (cd ios && swift test -j 1)
 (cd ios && xcodegen generate --spec project.yml)
