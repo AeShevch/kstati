@@ -10,11 +10,11 @@
 - [x] 2.1 Закрепить устанавливаемую версию SwiftLint, измерить нарушения предложенных правил на всех собственных Swift-файлах и записать выбранный небольшой набор в `.swiftlint.yml`; проверить `swiftlint lint --strict` без blanket suppression и без повторения правил `swift-format`.
 - [x] 2.2 Добавить исполняемый скрипт быстрых проверок с определением корня, проверкой инструментов, `swift-format lint --strict`, SwiftLint, `swift test -j 1`, XcodeGen и проверкой неизменности `project.pbxproj`; запустить его из корня и из `ios/`, убедиться в одинаковом результате и чистом `git status`.
 - [x] 2.3 Добавить режимы `smoke` и `full` к общей команде: выбор доступного iOS Simulator без фиксированного UDID, последовательный `xcodebuild test`, уникальный `.xcresult`; проверить локально `Smoke` 1/1 и `Full` 4/4, включая сценарий ошибки записи.
-- [ ] 2.4 Документировать установку/версии инструментов, быстрый и полный запуск в `ios/TESTING.md` и README; проверить документированные команды в чистом каталоге.
+- [x] 2.4 Документировать установку/версии инструментов, быстрый и полный запуск в `ios/TESTING.md` и README; проверить документированные команды в чистом каталоге.
 
 ## 3. GitHub Actions
 
-- [ ] 3.1 Добавить workflow для PR и `push main`: OpenSpec на Linux; общий локальный скрипт, Swift-тесты, сборка и `Smoke` на macOS; закрепить совместимые runner/Xcode/XcodeGen/SwiftLint, минимальные permissions и `concurrency`; проверить YAML через actionlint и команды локально.
+- [x] 3.1 Добавить workflow для PR и `push main`: OpenSpec на Linux; общий локальный скрипт, Swift-тесты, сборка и `Smoke` на macOS; закрепить совместимые runner/Xcode/XcodeGen/SwiftLint, минимальные permissions и `concurrency`; проверить YAML через actionlint и команды локально.
 - [ ] 3.2 Добавить отдельный workflow `Full` для PR с label `run-full-e2e`, `push main` и `workflow_dispatch` после интеграции; обеспечить последовательный UI-запуск и сохранение `.xcresult` при сбое с коротким сроком хранения; проверить условия запуска actionlint и тестовым PR.
 - [ ] 3.3 В GitHub PR к ветке предыдущего change получить зелёные OpenSpec, формат/SwiftLint/Swift tests/build и `Smoke`; поставить label `run-full-e2e` и получить `Full` 4/4; при сбое изучить логи/`xcresult`, исправить runner или workflow и повторить проверки.
 
