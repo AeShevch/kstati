@@ -8,7 +8,10 @@ final class ShareFailureE2ETests: XCTestCase {
         let sheet = FixtureHostPage(failureImage: true).shareImage()
         sheet.save()
         XCTAssertTrue(sheet.saveError.waitForExistence(timeout: 10))
+        XCTAssertFalse(sheet.saveError.label.contains("Тестовая ошибка записи"))
         XCTAssertTrue(sheet.saveButton.isEnabled)
         XCTAssertFalse(sheet.host.staticTexts["Сохранено локально"].exists)
+        session.app.launch()
+        XCTAssertTrue(session.app.staticTexts["Пока нет записей"].waitForExistence(timeout: 10))
     }
 }

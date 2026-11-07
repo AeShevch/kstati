@@ -87,3 +87,20 @@ import Testing
     _ = try MemoryRepository(directory: directory)
     #expect(!FileManager.default.fileExists(atPath: orphan.path))
 }
+
+@Test func failedImageFileWriteLeavesNoRecordOrOriginal() throws {
+    let directory = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    let originals = directory.appendingPathComponent("originals", isDirectory: true)
+    defer {
+        try? FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: originals.path)
+        try? FileManager.default.removeItem(at: directory)
+    }
+    let repo = try MemoryRepository(directory: directory)
+    try FileManager.default.setAttributes([.posixPermissions: 0o500], ofItemAtPath: originals.path)
+    do {
+        _ = try repo.saveImage(Data([1, 2, 3]), captureID: "failed-write")
+        Issue.record("Expected the file write to fail")
+    } catch {}
+    #expect(try repo.allItems().isEmpty)
+    #expect(try FileManager.default.contentsOfDirectory(atPath: originals.path).isEmpty)
+}

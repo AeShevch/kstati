@@ -9,9 +9,26 @@ enum SharedMemory {
             throw MemoryError.unavailableContainer
         }
         #if DEBUG
+            let failureMarker = container.appendingPathComponent(".kstati-e2e-fail-write")
+            let originals = container.appendingPathComponent("originals", isDirectory: true)
+            if FileManager.default.fileExists(atPath: failureMarker.path),
+                FileManager.default.fileExists(atPath: originals.path)
+            {
+                try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: originals.path)
+            }
             try resetForUITestIfNeeded(in: container)
         #endif
-        return try MemoryRepository(directory: container)
+        let repository = try MemoryRepository(directory: container)
+        #if DEBUG
+            let arguments = ProcessInfo.processInfo.arguments
+            if arguments.contains("-KST_E2E_TEST_ID"), arguments.contains("-KST_E2E_FAIL_WRITE") {
+                try Data().write(to: failureMarker, options: .atomic)
+                try FileManager.default.setAttributes([.posixPermissions: 0o500], ofItemAtPath: originals.path)
+            } else if FileManager.default.fileExists(atPath: failureMarker.path) {
+                try FileManager.default.removeItem(at: failureMarker)
+            }
+        #endif
+        return repository
     }
 
     #if DEBUG
@@ -33,12 +50,6 @@ enum SharedMemory {
                     }
                 }
                 try id.uuidString.write(to: marker, atomically: true, encoding: .utf8)
-            }
-            let failureMarker = container.appendingPathComponent(".kstati-e2e-fail-write")
-            if arguments.contains("-KST_E2E_FAIL_WRITE") {
-                try Data().write(to: failureMarker, options: .atomic)
-            } else if FileManager.default.fileExists(atPath: failureMarker.path) {
-                try FileManager.default.removeItem(at: failureMarker)
             }
         }
     #endif
