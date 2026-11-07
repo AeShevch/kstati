@@ -1,0 +1,11 @@
+included:
+  - ios
+excluded:
+  - ios/.build
+only_rules:
+  - force_cast
+  - force_try
+  - cyclomatic_complexity
+  - function_body_length
+  - empty_count
+  - unused_optional_binding

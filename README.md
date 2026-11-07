@@ -9,6 +9,8 @@
 3. Проверить [текущие specs](openspec/specs/) и первый архивный OpenSpec change: [proposal](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/proposal.md) → [delta specs](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/specs) → [design](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/design.md) → [tasks](openspec/changes/archive/2026-11-06-establish-offline-memory-foundation/tasks.md).
 4. Результаты проверок описаны в [отчёте тестирования](ios/TESTING.md).
 
+Правила для разработчика и агентов — в [AGENTS.md](AGENTS.md); перед коммитом используйте [чеклист ревью](docs/REVIEW_CHECKLIST.md).
+
 ## Разработка iOS
 
 `ios/Package.swift` содержит общие модули `MemoryCore`, `MemoryPersistence`, `MemoryOCR`. Их тесты запускаются командой `cd ios && swift test -j 1`. `ios/project.yml` — источник конфигурации Xcode; `cd ios && xcodegen generate --spec project.yml` создаёт `Kstati.xcodeproj`. Проект включает приложение, Share Extension, UI-тесты и тестовый host для системного Share Sheet.
