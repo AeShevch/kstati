@@ -48,6 +48,7 @@ for key, devices in json.load(sys.stdin)["devices"].items():
 raise SystemExit(f"No available {name} on {runtime}")
 ')"
 echo "Simulator: $simulator_name ($simulator_runtime, $simulator_id)"
+xcrun simctl bootstatus "$simulator_id" -b
 destination="platform=iOS Simulator,id=$simulator_id"
 xcodebuild -project ios/Kstati.xcodeproj -scheme Kstati -destination "$destination" build
 
