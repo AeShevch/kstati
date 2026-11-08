@@ -46,17 +46,21 @@ final class ShareViewController: UIViewController {
         let providers =
             (extensionContext?.inputItems as? [NSExtensionItem])?
             .flatMap { $0.attachments ?? [] } ?? []
-        if let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.image.identifier) }) {
-            loadImage(from: provider)
-        } else if let provider = providers.first(where: { $0.hasItemConformingToTypeIdentifier(UTType.url.identifier) })
-        {
-            loadLink(from: provider)
-        } else {
+        switch SharedAttachmentSelection.select(providers.map(\.registeredTypeIdentifiers)) {
+        case .link(let index):
+            let imageProvider = providers.first(where: {
+                $0.hasItemConformingToTypeIdentifier(UTType.image.identifier)
+            })
+            loadLink(from: providers[index], fallbackImageProvider: imageProvider)
+        case .image(let index):
+            loadImage(from: providers[index])
+        case nil:
             status.text = "Поддерживаемый материал не найден"
         }
     }
 
-    private func loadLink(from provider: NSItemProvider) {
+    private func loadLink(from provider: NSItemProvider, fallbackImageProvider: NSItemProvider?) {
+        let sendableFallback = fallbackImageProvider.map { SendableItemProvider(value: $0) }
         provider.loadItem(forTypeIdentifier: UTType.url.identifier, options: nil) { [weak self] item, _ in
             let address = item.flatMap { try? SharedURLInput.address(from: $0) }
             DispatchQueue.main.async {
@@ -66,7 +70,11 @@ final class ShareViewController: UIViewController {
                     self.status.text = "Ссылка готова к сохранению"
                     self.saveButton.isEnabled = true
                 } else {
-                    self.status.text = "Адрес не поддерживается"
+                    if let sendableFallback {
+                        self.loadImage(from: sendableFallback.value)
+                    } else {
+                        self.status.text = "Адрес не поддерживается"
+                    }
                 }
             }
         }
