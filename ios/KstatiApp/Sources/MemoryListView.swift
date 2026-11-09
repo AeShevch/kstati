@@ -7,6 +7,8 @@ struct MemoryListView: View {
     @State private var query = ""
     @State private var adding = false
     @State private var managingGroups = false
+    @State private var exportResult: String?
+    @State private var requestingExport = false
 
     var body: some View {
         NavigationStack {
@@ -39,6 +41,11 @@ struct MemoryListView: View {
                         .accessibilityIdentifier("manageGroups")
                 }
                 ToolbarItem(placement: .topBarTrailing) {
+                    Button("Экспорт", systemImage: "square.and.arrow.up") { requestingExport = true }
+                        .accessibilityIdentifier("exportMemory")
+                        .disabled(store.repository == nil)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Добавить", systemImage: "plus") { adding = true }
                         .accessibilityIdentifier("addMemory")
                 }
@@ -48,13 +55,26 @@ struct MemoryListView: View {
             }
             .sheet(isPresented: $adding) { AddMemoryView(store: store) }
             .sheet(isPresented: $managingGroups) { GroupsView(store: store) }
-            .alert("Ошибка", isPresented: Binding(get: { store.error != nil }, set: { if !$0 { store.error = nil } })) {
-                Button("ОК") { store.error = nil }
+            .alert(
+                exportResult == nil ? "Ошибка" : "Экспорт памяти",
+                isPresented: Binding(
+                    get: { exportResult != nil || store.error != nil },
+                    set: { presented in
+                        if !presented { dismissMessage() }
+                    })
+            ) {
+                Button("ОК") { dismissMessage() }
             } message: {
-                Text(store.error ?? "")
+                Text(exportResult ?? store.error ?? "")
             }
             .onAppear { store.refresh() }
         }
+        .modifier(MemoryExportFlow(repository: store.repository, result: $exportResult, requested: $requestingExport))
+    }
+
+    private func dismissMessage() {
+        exportResult = nil
+        store.error = nil
     }
 
     private func label(for item: MemoryItem) -> String {
