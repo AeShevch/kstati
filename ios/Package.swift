@@ -11,6 +11,7 @@ let package = Package(
         .library(name: "ShareInput", targets: ["ShareInput"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.20"),
         .package(url: "https://github.com/groue/GRDB.swift.git", from: "7.0.0"),
         .package(url: "https://github.com/swiftlang/swift-testing.git", exact: "6.2.3"),
     ],
@@ -18,7 +19,11 @@ let package = Package(
         .target(name: "MemoryCore", path: "MemoryCore/Sources"),
         .target(name: "ShareInput", dependencies: ["MemoryCore"], path: "ShareInput/Sources"),
         .target(
-            name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")],
+            name: "MemoryPersistence",
+            dependencies: [
+                "MemoryCore", .product(name: "GRDB", package: "GRDB.swift"),
+                .product(name: "ZIPFoundation", package: "ZIPFoundation"),
+            ],
             path: "MemoryPersistence/Sources"),
         .target(name: "MemoryOCR", dependencies: ["MemoryCore", "MemoryPersistence"], path: "MemoryOCR/Sources"),
         .testTarget(
@@ -28,6 +33,7 @@ let package = Package(
             name: "MemoryPersistenceTests",
             dependencies: [
                 "MemoryPersistence", "MemoryCore", .product(name: "GRDB", package: "GRDB.swift"),
+                .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "Testing", package: "swift-testing"),
             ],
             path: "MemoryPersistence/Tests"),

@@ -135,6 +135,20 @@ public final class MemoryRepository: @unchecked Sendable {
         }
     }
 
+    func exportSnapshot() throws -> MemoryExportManifest {
+        try dbPool.read { db in
+            let records = try Row.fetchAll(db, sql: "SELECT id FROM memory_items ORDER BY id")
+                .compactMap { row in try load(UUID(uuidString: row["id"])!, db: db) }
+                .map(MemoryExportManifest.Record.init)
+            let groups = try Row.fetchAll(db, sql: "SELECT id,name FROM memory_groups ORDER BY id")
+                .map { MemoryExportManifest.Group(id: $0["id"], name: $0["name"]) }
+            let memberships = try Row.fetchAll(
+                db, sql: "SELECT item_id,group_id FROM memory_item_groups ORDER BY item_id,group_id"
+            ).map { MemoryExportManifest.Membership(itemID: $0["item_id"], groupID: $0["group_id"]) }
+            return MemoryExportManifest(records: records, groups: groups, memberships: memberships)
+        }
+    }
+
     public func originalData(for id: UUID) throws -> Data? {
         guard let item = try item(id: id) else { return nil }
         guard case .image(let path, _) = item.original else { return nil }
