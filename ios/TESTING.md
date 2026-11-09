@@ -28,6 +28,8 @@ xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS S
 
 Проверка 2026-11-08: `./scripts/ios-checks.sh fast` — 21/21 Swift-тест, включая выбор URL при наличии изображения превью; формат, SwiftLint и XcodeGen прошли. Сборка приложения и Share Extension после изменения выбора вложения прошла.
 
+Проверка 2026-11-09 на коммите `577a0d2`: [PR checks](https://github.com/AeShevch/kstati/actions/runs/42589201917) — OpenSpec, actionlint, формат, SwiftLint, 21 Swift-тест, сборка и Smoke 1/1 прошли; [Full E2E](https://github.com/AeShevch/kstati/actions/runs/42589201887) — 6/6 без ошибок, включая четыре прежних сценария и два сценария ссылок. Тест `preLinkDatabaseMigratesWithoutDataLoss` проверил миграцию старой базы с текстом и изображением. Локальный Smoke после перезапуска симулятора тоже прошёл 1/1 (`/tmp/kstati-link-smoke-retry-20261108.xcresult`).
+
 Проверка 2026-11-07: `fast` из корня и `ios/` прошёл, рабочий каталог после прогона остался чистым. `smoke` — 1/1, `full` — 4/4 без пропусков; диагностические пакеты сохранены в `/tmp/kstati-quality-results/`.
 
 GitHub PR #1: [iOS PR checks, run 42356197869](https://github.com/AeShevch/kstati/actions/runs/42356197869) — OpenSpec и actionlint прошли; формат, SwiftLint, десять Swift-тестов, сборка и `Smoke` 1/1 прошли на `xcode-27`. Один SwiftPM-тест Vision отмечен пропущенным по указанной выше причине; распознавание OCR проверено в `Smoke`.
