@@ -24,10 +24,15 @@ jobs:
           npx -y @fission-ai/openspec@1.16.0 validate --all --strict --no-interactive
           npx -y @fission-ai/openspec@1.16.0 validate --archived --strict --no-interactive
       - name: Validate workflow syntax
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl --fail --location --silent --show-error --retry 3 \
+          if ! curl --fail --location --silent --show-error --retry 3 \
             https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz \
-            -o "$RUNNER_TEMP/actionlint.tar.gz"
+            -o "$RUNNER_TEMP/actionlint.tar.gz"; then
+            gh api -H 'Accept: application/octet-stream' \
+              repos/rhysd/actionlint/releases/assets/384924896 > "$RUNNER_TEMP/actionlint.tar.gz"
+          fi
           echo '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  '"$RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check
           tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP" actionlint
           "$RUNNER_TEMP/actionlint" .github/workflows/*.yml
@@ -42,6 +47,8 @@ jobs:
         with:
           persist-credentials: false
       - name: Install pinned iOS tools
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: ./scripts/install-ios-tools.sh
       - name: Format, lint, test, build and Smoke E2E
         env:
