@@ -51,6 +51,9 @@ public final class MemoryRepository: @unchecked Sendable {
                     CREATE TABLE file_cleanup (path TEXT PRIMARY KEY);
                     """)
         }
+        migrator.registerMigration("add-original-url") { db in
+            try db.execute(sql: "ALTER TABLE memory_items ADD COLUMN original_url TEXT")
+        }
         try migrator.migrate(dbPool)
         try cleanupFiles()
     }
@@ -101,6 +104,26 @@ public final class MemoryRepository: @unchecked Sendable {
         }
     }
 
+    @discardableResult
+    public func saveLink(_ address: String, captureID: String) throws -> MemoryItem {
+        guard let components = URLComponents(string: address),
+            let scheme = components.scheme?.lowercased(),
+            scheme == "http" || scheme == "https",
+            let host = components.host, !host.isEmpty
+        else { throw MemoryError.invalidURL }
+        return try dbPool.write { db in
+            if let existing = try findCapture(captureID, db: db) { return existing }
+            let id = UUID()
+            let now = Date().timeIntervalSince1970
+            try db.execute(
+                sql: """
+                    INSERT INTO memory_items (id,capture_id,kind,original_url,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?)
+                    """, arguments: [id.uuidString, captureID, "link", address, now, now])
+            return try load(id, db: db)!
+        }
+    }
+
     public func item(id: UUID) throws -> MemoryItem? {
         try dbPool.read { try load(id, db: $0) }
     }
@@ -146,13 +169,19 @@ public final class MemoryRepository: @unchecked Sendable {
         let words = query.split(whereSeparator: \.isWhitespace).map(String.init)
         guard !words.isEmpty else { return [] }
         let pattern = words.map { "\"" + $0.replacingOccurrences(of: "\"", with: "\"\"") + "\"" }.joined(separator: " ")
+        let escapedURLQuery = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            .replacingOccurrences(of: "!", with: "!!")
+            .replacingOccurrences(of: "%", with: "!%")
+            .replacingOccurrences(of: "_", with: "!_")
         return try dbPool.read { db in
             try Row.fetchAll(
                 db,
                 sql: """
-                    SELECT m.id FROM memory_fts f JOIN memory_items m ON m.id=f.item_id
-                    WHERE memory_fts MATCH ? ORDER BY m.created_at DESC
-                    """, arguments: [pattern]
+                    SELECT m.id FROM memory_items m
+                    WHERE m.id IN (SELECT item_id FROM memory_fts WHERE memory_fts MATCH ?)
+                       OR (m.kind='link' AND lower(m.original_url) LIKE ? ESCAPE '!')
+                    ORDER BY m.created_at DESC
+                    """, arguments: [pattern, "%" + escapedURLQuery + "%"]
             )
             .compactMap { row in try load(UUID(uuidString: row["id"])!, db: db) }
         }
@@ -247,6 +276,23 @@ public final class MemoryRepository: @unchecked Sendable {
         }
     }
 
+    #if DEBUG
+        public func setLinkWriteFailureForTests(_ enabled: Bool) throws {
+            try dbPool.write { db in
+                if enabled {
+                    try db.execute(
+                        sql: """
+                            CREATE TRIGGER IF NOT EXISTS kstati_e2e_fail_link_write
+                            BEFORE INSERT ON memory_items WHEN NEW.kind='link'
+                            BEGIN SELECT RAISE(ABORT, 'E2E link write failure'); END
+                            """)
+                } else {
+                    try db.execute(sql: "DROP TRIGGER IF EXISTS kstati_e2e_fail_link_write")
+                }
+            }
+        }
+    #endif
+
     private func findCapture(_ captureID: String, db: Database) throws -> MemoryItem? {
         guard
             let id: String = try String.fetchOne(
@@ -261,10 +307,13 @@ public final class MemoryRepository: @unchecked Sendable {
         else { return nil }
         let kind = MemoryKind(rawValue: row["kind"] as String)!
         let original: Original
-        if kind == .text {
+        switch kind {
+        case .text:
             original = .text(row["original_text"])
-        } else {
+        case .image:
             original = .image(path: row["original_path"], sha256: row["original_sha256"])
+        case .link:
+            original = .link(url: row["original_url"])
         }
         let confirmedValue: String? = row["confirmed_text"]
         let confirmedAt: Double? = row["confirmed_at"]

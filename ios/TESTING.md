@@ -1,4 +1,4 @@
-# Проверка первого OpenSpec change
+# Проверка iOS
 
 ## Единая проверка iOS
 
@@ -11,9 +11,24 @@
 ./scripts/ios-checks.sh full
 ```
 
-Скрипты работают и из `ios/` через `../scripts/`. `fast` проверяет Swift-формат, шесть правил SwiftLint, 12 Swift-тестов и воспроизводимость XcodeGen. `smoke` и `full` сначала выполняют `fast`, дожидаются полной загрузки симулятора, затем собирают приложение и запускают соответствующий последовательный E2E-план. Симулятор выбирается по имени и версии runtime, а не по UDID; при необходимости задайте `KSTATI_SIMULATOR_NAME` и `KSTATI_SIMULATOR_RUNTIME`. `xcresult` сохраняется в игнорируемый `.artifacts/` либо в `KSTATI_RESULT_DIR`.
+Скрипты работают и из `ios/` через `../scripts/`. `fast` проверяет Swift-формат, шесть правил SwiftLint, 21 Swift-тест и воспроизводимость XcodeGen. `smoke` и `full` сначала выполняют `fast`, дожидаются полной загрузки симулятора, затем собирают приложение и запускают соответствующий последовательный E2E-план. Симулятор выбирается по имени и версии runtime, а не по UDID; при необходимости задайте `KSTATI_SIMULATOR_NAME` и `KSTATI_SIMULATOR_RUNTIME`. `xcresult` сохраняется в игнорируемый `.artifacts/` либо в `KSTATI_RESULT_DIR`.
 
-На GitHub-hosted macOS runner Vision возвращает `_GenericObjCError.nilError` при распознавании сгенерированного PNG в SwiftPM-тесте. Этот один платформенный тест пропускается только при явном `KSTATI_SKIP_HOSTED_MACOS_VISION_TEST=1`, заданном в macOS workflow; остальные одиннадцать Swift-тестов выполняются. `Smoke` в iOS Simulator проверяет реальный OCR через Share Extension. Локально Vision-тест выполняется вместе с остальными, даже при `CI=true`.
+На GitHub-hosted macOS runner Vision возвращает `_GenericObjCError.nilError` при распознавании сгенерированного PNG в SwiftPM-тесте. Этот один платформенный тест пропускается только при явном `KSTATI_SKIP_HOSTED_MACOS_VISION_TEST=1`, заданном в macOS workflow; остальные 20 Swift-тестов выполняются. `Smoke` в iOS Simulator проверяет реальный OCR через Share Extension. Локально Vision-тест выполняется вместе с остальными, даже при `CI=true`.
+
+## Захват веб-ссылок
+
+Для целевых UI-сценариев запустите из `ios/` команды ниже на доступном iPhone 17e с iOS 27.2. Первый сценарий проверяет Share Sheet, повтор без дубля, перезапуск, поиск по домену и пути и явное открытие в Safari. Второй создаёт реальный отказ `INSERT` в SQLite, проверяет сообщение и доступность повтора, затем снимает тестовый trigger и проверяет отсутствие записи. Для проверки без сети временно отключите Wi‑Fi перед первым запуском и восстановите его после окончания.
+
+```sh
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,name=iPhone 17e,OS=27.2' -only-testing:KstatiUITests/ShareLinkE2ETests/testShareLinkSearchAndOpenAction -parallel-testing-enabled NO test
+xcodebuild -project Kstati.xcodeproj -scheme Kstati -destination 'platform=iOS Simulator,name=iPhone 17e,OS=27.2' -only-testing:KstatiUITests/ShareLinkFailureE2ETests/testShareLinkReportsDatabaseWriteFailure -parallel-testing-enabled NO test
+```
+
+Проверка 2026-11-07: `swift test -j 1` — 20/20, включая миграцию старой схемы, валидацию URL, поиск и отказ SQLite. Целевые UI-сценарии: ссылка — 1/1 с сетью и 1/1 без Wi‑Fi, ошибка записи — 1/1. Wi‑Fi после офлайн-прогона включён обратно. Локальный `Full` — 6/6 без ошибок: четыре прежних сценария и два сценария ссылок (`/tmp/kstati-link-full-20261107.xcresult`). Итоговые режимы скрипта и CI фиксируются после прогона на ветке.
+
+Проверка 2026-11-08: `./scripts/ios-checks.sh fast` — 21/21 Swift-тест, включая выбор URL при наличии изображения превью; формат, SwiftLint и XcodeGen прошли. Сборка приложения и Share Extension после изменения выбора вложения прошла.
+
+Проверка 2026-11-09 на коммите `577a0d2`: [PR checks](https://github.com/AeShevch/kstati/actions/runs/42589201917) — OpenSpec, actionlint, формат, SwiftLint, 21 Swift-тест, сборка и Smoke 1/1 прошли; [Full E2E](https://github.com/AeShevch/kstati/actions/runs/42589201887) — 6/6 без ошибок, включая четыре прежних сценария и два сценария ссылок. Тест `preLinkDatabaseMigratesWithoutDataLoss` проверил миграцию старой базы с текстом и изображением. Локальный Smoke после перезапуска симулятора тоже прошёл 1/1 (`/tmp/kstati-link-smoke-retry-20261108.xcresult`).
 
 Проверка 2026-11-07: `fast` из корня и `ios/` прошёл, рабочий каталог после прогона остался чистым. `smoke` — 1/1, `full` — 4/4 без пропусков; диагностические пакеты сохранены в `/tmp/kstati-quality-results/`.
 

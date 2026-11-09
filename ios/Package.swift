@@ -8,6 +8,7 @@ let package = Package(
         .library(name: "MemoryCore", targets: ["MemoryCore"]),
         .library(name: "MemoryPersistence", targets: ["MemoryPersistence"]),
         .library(name: "MemoryOCR", targets: ["MemoryOCR"]),
+        .library(name: "ShareInput", targets: ["ShareInput"]),
     ],
     dependencies: [
         .package(url: "https://github.com/groue/GRDB.swift.git", from: "7.0.0"),
@@ -15,6 +16,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "MemoryCore", path: "MemoryCore/Sources"),
+        .target(name: "ShareInput", dependencies: ["MemoryCore"], path: "ShareInput/Sources"),
         .target(
             name: "MemoryPersistence", dependencies: ["MemoryCore", .product(name: "GRDB", package: "GRDB.swift")],
             path: "MemoryPersistence/Sources"),
@@ -24,12 +26,19 @@ let package = Package(
             path: "MemoryCore/Tests"),
         .testTarget(
             name: "MemoryPersistenceTests",
-            dependencies: ["MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing")],
+            dependencies: [
+                "MemoryPersistence", "MemoryCore", .product(name: "GRDB", package: "GRDB.swift"),
+                .product(name: "Testing", package: "swift-testing"),
+            ],
             path: "MemoryPersistence/Tests"),
         .testTarget(
             name: "MemoryOCRTests",
             dependencies: [
                 "MemoryOCR", "MemoryPersistence", "MemoryCore", .product(name: "Testing", package: "swift-testing"),
             ], path: "MemoryOCR/Tests"),
+        .testTarget(
+            name: "ShareInputTests",
+            dependencies: ["ShareInput", "MemoryCore", .product(name: "Testing", package: "swift-testing")],
+            path: "ShareInput/Tests"),
     ]
 )

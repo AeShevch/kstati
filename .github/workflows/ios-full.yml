@@ -26,6 +26,8 @@ jobs:
         with:
           persist-credentials: false
       - name: Install pinned iOS tools
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: ./scripts/install-ios-tools.sh
       - name: Format, lint, test, build and Full E2E
         env:

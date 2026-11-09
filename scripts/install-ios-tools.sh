@@ -18,16 +18,28 @@ temporary_dir="$(mktemp -d)"
 trap 'rm -rf "$temporary_dir"' EXIT
 mkdir -p "$tools_dir/bin"
 
-curl --fail --location --silent --show-error --retry 3 \
+download_asset() {
+    local url="$1" asset="$2" destination="$3"
+    if curl --fail --location --silent --show-error --retry 3 "$url" -o "$destination"; then
+        return 0
+    fi
+    if [[ -n "${GH_TOKEN:-}" ]] && command -v gh >/dev/null; then
+        gh api -H 'Accept: application/octet-stream' "repos/$asset" > "$destination"
+        return 0
+    fi
+    return 1
+}
+
+download_asset \
     "https://github.com/realm/SwiftLint/releases/download/$swiftlint_version/portable_swiftlint.zip" \
-    -o "$temporary_dir/swiftlint.zip"
+    realm/SwiftLint/releases/assets/524187565 "$temporary_dir/swiftlint.zip"
 printf '%s  %s\n' "$swiftlint_sha" "$temporary_dir/swiftlint.zip" | shasum -a 256 -c -
 unzip -q "$temporary_dir/swiftlint.zip" -d "$temporary_dir/swiftlint"
 install -m 755 "$temporary_dir/swiftlint/swiftlint" "$tools_dir/bin/swiftlint"
 
-curl --fail --location --silent --show-error --retry 3 \
+download_asset \
     "https://github.com/yonaskolb/XcodeGen/releases/download/$xcodegen_version/xcodegen.zip" \
-    -o "$temporary_dir/xcodegen.zip"
+    yonaskolb/XcodeGen/releases/assets/478866069 "$temporary_dir/xcodegen.zip"
 printf '%s  %s\n' "$xcodegen_sha" "$temporary_dir/xcodegen.zip" | shasum -a 256 -c -
 unzip -q "$temporary_dir/xcodegen.zip" -d "$temporary_dir/xcodegen"
 rm -rf "$tools_dir/xcodegen"

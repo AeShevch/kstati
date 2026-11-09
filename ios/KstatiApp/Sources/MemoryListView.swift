@@ -32,7 +32,7 @@ struct MemoryListView: View {
                 }
             }
             .navigationTitle("Память")
-            .searchable(text: $query, prompt: "Поиск по подтверждённому тексту")
+            .searchable(text: $query, prompt: "Поиск по тексту или ссылке")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Группы", systemImage: "folder") { managingGroups = true }
@@ -61,6 +61,7 @@ struct MemoryListView: View {
         switch item.original {
         case .text(let value): value
         case .image: "Изображение"
+        case .link(let address): address
         }
     }
 }

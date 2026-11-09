@@ -1,3 +1,3 @@
 import Foundation
 
-public enum MemoryKind: String, Codable, Sendable { case text, image }
+public enum MemoryKind: String, Codable, Sendable { case text, image, link }
