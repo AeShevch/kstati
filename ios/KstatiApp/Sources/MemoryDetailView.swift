@@ -67,6 +67,7 @@ struct MemoryDetailView: View {
                         .buttonStyle(.borderless)
                     }
                 }
+                PlannerSection(store: store, sourceID: id)
                 Section("Группы") {
                     ForEach(store.groups) { group in
                         Toggle(
