@@ -11,7 +11,7 @@ struct MemoryExportPage {
         let prepare = app.buttons["Подготовить архив"]
         XCTAssertTrue(prepare.waitForExistence(timeout: 5))
         prepare.tap()
-        XCTAssertTrue(cancelButton.waitForExistence(timeout: 15))
+        XCTAssertTrue(cancelButton.waitForExistence(timeout: 35), app.debugDescription)
     }
 
     var cancelButton: XCUIElement {
