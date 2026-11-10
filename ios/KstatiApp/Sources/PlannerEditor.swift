@@ -4,6 +4,7 @@ import SwiftUI
 struct PlannerEditor: View {
     let store: MemoryStore
     let entry: PlannerEntry?
+    private let needsEventDate: Bool
     let onSave: (String, PlannerEntry.Schedule) throws -> Void
 
     @Environment(\.dismiss) private var dismiss
@@ -14,18 +15,22 @@ struct PlannerEditor: View {
     @State private var failed = false
 
     init(
-        store: MemoryStore, entry: PlannerEntry? = nil,
+        store: MemoryStore, entry: PlannerEntry? = nil, suggestedTitle: String? = nil,
+        suggestedEvent: Bool = false, suggestedDay: PlannerDay? = nil,
         onSave: @escaping (String, PlannerEntry.Schedule) throws -> Void
     ) {
         self.store = store
         self.entry = entry
         self.onSave = onSave
-        _title = State(initialValue: entry?.title ?? "")
+        needsEventDate = suggestedEvent && suggestedDay == nil
+        _title = State(initialValue: entry?.title ?? suggestedTitle ?? "")
         let event: Bool
-        if case .event = entry?.schedule { event = true } else { event = false }
+        if case .event = entry?.schedule { event = true } else { event = suggestedEvent }
         _isEvent = State(initialValue: event)
-        _hasDate = State(initialValue: entry == nil || entry?.schedule.day != nil)
-        _date = State(initialValue: entry?.schedule.day?.date() ?? .now)
+        _hasDate = State(
+            initialValue: entry?.schedule.day != nil || (entry == nil && (suggestedTitle == nil || suggestedDay != nil))
+        )
+        _date = State(initialValue: entry?.schedule.day?.date() ?? suggestedDay?.date() ?? .now)
     }
 
     var body: some View {
@@ -43,11 +48,11 @@ struct PlannerEditor: View {
                     NavigationLink("Исходная запись") { MemoryDetailView(store: store, id: sourceID) }
                 }
             }
-            if !isEvent {
+            if !isEvent || needsEventDate {
                 Toggle("Указать дату", isOn: $hasDate)
                     .accessibilityIdentifier("plannerHasDate")
             }
-            if isEvent || hasDate {
+            if (isEvent && !needsEventDate) || hasDate {
                 DatePicker("Дата", selection: $date, displayedComponents: .date)
                     .accessibilityIdentifier("plannerDate")
                 if let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: .now) {
@@ -64,7 +69,9 @@ struct PlannerEditor: View {
                 Button("Сохранить") { save() }
                     .buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("savePlan")
-                    .disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    .disabled(
+                        title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                            || (isEvent && needsEventDate && !hasDate))
             }
             .padding()
             .background(.bar)

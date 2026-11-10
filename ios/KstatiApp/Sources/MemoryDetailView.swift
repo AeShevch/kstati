@@ -67,6 +67,20 @@ struct MemoryDetailView: View {
                         .buttonStyle(.borderless)
                     }
                 }
+                #if DEBUG && targetEnvironment(simulator)
+                    Section("Анализ") {
+                        if let snapshot = item.confirmedText,
+                            !snapshot.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                        {
+                            NavigationLink("Подготовить анализ") {
+                                MemoryAnalysisView(store: store, sourceID: id, snapshot: snapshot)
+                            }
+                            .accessibilityIdentifier("openAnalysis")
+                        } else {
+                            Text("Сначала сохраните подтверждённый текст.")
+                        }
+                    }
+                #endif
                 PlannerSection(store: store, sourceID: id)
                 Section("Группы") {
                     ForEach(store.groups) { group in

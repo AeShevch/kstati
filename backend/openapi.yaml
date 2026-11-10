@@ -1,0 +1,44 @@
+openapi: 3.1.0
+info:
+  title: Kstati Local Analysis
+  version: 1.0.0
+paths:
+  /v1/memory-analysis:
+    post:
+      summary: Предложить планы по подтверждённому тексту
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [text, today]
+              properties:
+                text: { type: string, minLength: 1, maxLength: 4000, pattern: '\S' }
+                today: { type: string, format: date }
+      responses:
+        '200':
+          description: Предложения для ручной проверки
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [suggestions]
+                properties:
+                  suggestions:
+                    type: array
+                    maxItems: 5
+                    items:
+                      type: object
+                      additionalProperties: false
+                      required: [kind, title, day]
+                      properties:
+                        kind: { enum: [task, event] }
+                        title: { type: string, minLength: 1, maxLength: 200, pattern: '\S' }
+                        day: { type: [string, 'null'], format: date }
+        '400': { description: Некорректный запрос }
+        '404': { description: Маршрут выключен }
+        '413': { description: Превышен размер запроса }
+        '502': { description: Анализ недоступен }
