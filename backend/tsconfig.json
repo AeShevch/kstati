@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "types": ["node"],
+    "module": "NodeNext",
+    "strict": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "rootDir": ".",
+    "skipLibCheck": true
+  },
+  "include": ["src", "test"]
+}

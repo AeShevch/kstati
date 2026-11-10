@@ -29,10 +29,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/install-ios-tools.sh
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24'
+      - run: npm ci --prefix backend
       - name: Format, lint, test, build and Full E2E
         env:
           KSTATI_RESULT_DIR: ${{ runner.temp }}/kstati-results
-        run: ./scripts/ios-checks.sh full
+        run: ./scripts/with-analysis-fixture.sh ./scripts/ios-checks.sh full
       - name: Upload UI diagnostics on failure
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
