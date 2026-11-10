@@ -34,7 +34,7 @@ struct PlanRemindersTests {
         defer { try? FileManager.default.removeItem(at: directory) }
         let repository = try MemoryRepository(directory: directory)
         let source = try repository.saveText("Original")
-        let date = Date.now.addingTimeInterval(86_400)
+        let date = Date(timeIntervalSince1970: (Date.now.timeIntervalSince1970 / 60).rounded(.down) * 60 + 86_400)
         let next = date.addingTimeInterval(300)
         let entry = try repository.createPlan(
             title: "Plan", sourceID: source.id, schedule: .event(day: PlannerDay(date)))
