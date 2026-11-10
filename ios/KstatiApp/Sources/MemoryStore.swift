@@ -2,6 +2,7 @@ import Foundation
 import MemoryCore
 import MemoryOCR
 import MemoryPersistence
+import PlannerNotifications
 import SwiftUI
 
 @MainActor
@@ -10,6 +11,7 @@ final class MemoryStore: ObservableObject {
     @Published var groups: [MemoryGroup] = []
     @Published var error: String?
     @Published private var drafts: [UUID: String] = [:]
+    let reminders = PlanReminders()
     let repository: MemoryRepository?
 
     init() {

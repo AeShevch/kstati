@@ -1,4 +1,5 @@
 import MemoryCore
+import PlannerNotifications
 import SwiftUI
 import UIKit
 
@@ -30,7 +31,10 @@ struct PlannerSection: View {
                     NavigationLink {
                         if let repository = store.repository {
                             PlannerEditor(store: store, entry: entry) { _, schedule in
-                                try repository.reschedulePlan(entry, to: schedule.day)
+                                let cancelID = entry.schedule.day == schedule.day ? nil : entry.id
+                                try store.reminders.updatePlan(canceling: cancelID) {
+                                    try repository.reschedulePlan(entry, to: schedule.day)
+                                }
                                 reload()
                             }
                         }
@@ -84,7 +88,9 @@ struct PlannerSection: View {
 
     private func setCompleted(_ entry: PlannerEntry, completed: Bool) {
         do {
-            try store.repository?.setPlanCompleted(entry.id, completed: completed)
+            try store.reminders.updatePlan(canceling: completed ? entry.id : nil) {
+                try store.repository?.setPlanCompleted(entry.id, completed: completed)
+            }
             reload()
         } catch {
             failed = true

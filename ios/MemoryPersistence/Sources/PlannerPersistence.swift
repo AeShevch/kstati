@@ -22,6 +22,13 @@ extension DatabaseMigrator {
                     );
                     """)
         }
+        registerMigration("add-local-reminders") { db in
+            try db.execute(
+                sql: """
+                    ALTER TABLE planner_tasks ADD COLUMN reminder_at REAL;
+                    ALTER TABLE planner_events ADD COLUMN reminder_at REAL;
+                    """)
+        }
     }
 }
 
@@ -51,9 +58,9 @@ extension MemoryRepository {
             try Row.fetchAll(
                 db,
                 sql: """
-                    SELECT * FROM (SELECT id,source_id,title,day,completed FROM planner_tasks
+                    SELECT * FROM (SELECT id,source_id,title,day,completed,reminder_at FROM planner_tasks
                     UNION ALL
-                    SELECT id,source_id,title,day,NULL AS completed FROM planner_events)
+                    SELECT id,source_id,title,day,NULL AS completed,reminder_at FROM planner_events)
                     ORDER BY day IS NULL,day,title,id
                     """
             ).map { row in
@@ -69,7 +76,8 @@ extension MemoryRepository {
                 guard let id = UUID(uuidString: row["id"]) else { throw MemoryError.missingItem }
                 return PlannerEntry(
                     id: id, sourceID: (row["source_id"] as String?).flatMap(UUID.init(uuidString:)),
-                    title: row["title"], schedule: schedule)
+                    title: row["title"], schedule: schedule,
+                    reminderAt: (row["reminder_at"] as Double?).map(Date.init(timeIntervalSince1970:)))
             }
         }
     }
@@ -79,11 +87,15 @@ extension MemoryRepository {
             switch entry.schedule {
             case .task:
                 try db.execute(
-                    sql: "UPDATE planner_tasks SET day=? WHERE id=?", arguments: [day?.key, entry.id.uuidString])
+                    sql:
+                        "UPDATE planner_tasks SET reminder_at=CASE WHEN day IS ? THEN reminder_at END, day=? WHERE id=?",
+                    arguments: [day?.key, day?.key, entry.id.uuidString])
             case .event:
                 guard let day else { throw MemoryError.missingItem }
                 try db.execute(
-                    sql: "UPDATE planner_events SET day=? WHERE id=?", arguments: [day.key, entry.id.uuidString])
+                    sql:
+                        "UPDATE planner_events SET reminder_at=CASE WHEN day IS ? THEN reminder_at END, day=? WHERE id=?",
+                    arguments: [day.key, day.key, entry.id.uuidString])
             }
             guard db.changesCount == 1 else { throw MemoryError.missingItem }
         }
@@ -92,7 +104,28 @@ extension MemoryRepository {
     public func setPlanCompleted(_ id: UUID, completed: Bool) throws {
         try dbPool.write { db in
             try db.execute(
-                sql: "UPDATE planner_tasks SET completed=? WHERE id=?", arguments: [completed, id.uuidString])
+                sql:
+                    "UPDATE planner_tasks SET reminder_at=CASE WHEN NOT ? THEN reminder_at END, completed=? WHERE id=?",
+                arguments: [completed, completed, id.uuidString])
+            guard db.changesCount == 1 else { throw MemoryError.missingItem }
+        }
+    }
+    public func setPlanReminder(_ entry: PlannerEntry, at date: Date?) throws {
+        try dbPool.write { db in
+            let sql: String
+            switch entry.schedule {
+            case .task:
+                sql = """
+                    UPDATE planner_tasks SET reminder_at=? WHERE id=?
+                    AND (? IS NULL OR (day=? AND completed=0))
+                    """
+            case .event:
+                sql = """
+                    UPDATE planner_events SET reminder_at=? WHERE id=? AND (? IS NULL OR day=?)
+                    """
+            }
+            let timestamp = date?.timeIntervalSince1970
+            try db.execute(sql: sql, arguments: [timestamp, entry.id.uuidString, timestamp, entry.schedule.day?.key])
             guard db.changesCount == 1 else { throw MemoryError.missingItem }
         }
     }
