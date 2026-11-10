@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		032B1348D2B2D23FA45D089C /* PlanReminderPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F08E7039D0FE311C6813213 /* PlanReminderPage.swift */; };
 		07FA6D06CC9941C3FD9EA4B3 /* PlannerPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA64B6BDD53DABAE5A55FA35 /* PlannerPage.swift */; };
 		10FDA2FFCF4A94FE896BBEFA /* MemoryPersistence in Frameworks */ = {isa = PBXBuildFile; productRef = BC9752D92291E24E4DC83A03 /* MemoryPersistence */; };
 		15F67CE53E2F05EA0780FEFD /* KstatiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39B3B3D5F411955889120E14 /* KstatiApp.swift */; };
@@ -21,14 +22,17 @@
 		4A8242DAADFB1A9132769C74 /* ShareFixtureHost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D653019229B98C7B7571F04D /* ShareFixtureHost.swift */; };
 		4AF8C084399D4C9A7F51C6BF /* MemoryExportFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24E4CB7FD0BE627B89D9A5E /* MemoryExportFlow.swift */; };
 		4B3426F017072177FCBB859F /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6F50FDBDE017C214F07F575 /* GroupsView.swift */; };
+		4E15776C871E7763CEC1C79B /* PlanReminderE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8612ED2A38D8E01E32F5CA99 /* PlanReminderE2ETests.swift */; };
 		51F499244C0828EDB324989A /* MemoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE93EB8F4D1FE740D23A2A1A /* MemoryListView.swift */; };
 		5229F905C16E3925A2AC917F /* GroupsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC5972D024970EA669C0BD7 /* GroupsPage.swift */; };
 		5DE04683EC749B85A66B40E8 /* ShareSheetPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2DAF88B673D0E6BC71B816 /* ShareSheetPage.swift */; };
+		609AF3F31D2ECEFE88E1B0D3 /* PlanReminderControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4081B66B848FFCD0A74A867B /* PlanReminderControls.swift */; };
 		60E647887F60D26E300A0D57 /* MemoryExportE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89242F20E314E4BA11E55432 /* MemoryExportE2ETests.swift */; };
 		61AED2EAB50950C775ECAA48 /* MemoryCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4FC2CB9F96D1E0CFE066ED3B /* MemoryCore */; };
 		62A9D1993F497F51CC6929A1 /* ShareLinkFailureE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1566C75D8BB2BE2D8CEE8DF /* ShareLinkFailureE2ETests.swift */; };
 		6449EBC4F515CB94BBD17494 /* KstatiShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		6C0B6C83BA0FE4FDBCD07986 /* ShareInput in Frameworks */ = {isa = PBXBuildFile; productRef = BB77927C5F91E009BA110F3E /* ShareInput */; };
+		6F830C788F09F71F1432E3B3 /* PlannerNotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 1035DE7FD2EE85504CC6A016 /* PlannerNotifications */; };
 		71F60595F65D974F384CB03D /* E2ETestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D141378A0742EA10F2AA6AD /* E2ETestSession.swift */; };
 		81D87B044533B271C095195E /* ShareCaptureE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD45B145B387D9855BB68BBF /* ShareCaptureE2ETests.swift */; };
 		86E101E39396F3417E9221E0 /* TodayPlannerE2ETests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0413D42C1E463218E131C3F4 /* TodayPlannerE2ETests.swift */; };
@@ -86,6 +90,7 @@
 		39B3B3D5F411955889120E14 /* KstatiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KstatiApp.swift; sourceTree = "<group>"; };
 		3D0E839649EF594DC1A06706 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		3E2DAF88B673D0E6BC71B816 /* ShareSheetPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheetPage.swift; sourceTree = "<group>"; };
+		4081B66B848FFCD0A74A867B /* PlanReminderControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanReminderControls.swift; sourceTree = "<group>"; };
 		4BD22951D79D51695AC1DB68 /* ManualCaptureE2ETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualCaptureE2ETests.swift; sourceTree = "<group>"; };
 		4C668FFFD7F58D507CA91EE3 /* FixtureHostPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixtureHostPage.swift; sourceTree = "<group>"; };
 		4F0D885DAA01AFC7064BD1F6 /* MemoryListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryListPage.swift; sourceTree = "<group>"; };
@@ -96,6 +101,8 @@
 		718193ED61A89C413D66F0D4 /* ShareFailureE2ETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareFailureE2ETests.swift; sourceTree = "<group>"; };
 		71D676C4FD4F215BCCFED9A8 /* MemoryExportFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryExportFile.swift; sourceTree = "<group>"; };
 		7D02AE215DDAFE150D61A0BB /* ShareLinkE2ETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareLinkE2ETests.swift; sourceTree = "<group>"; };
+		7F08E7039D0FE311C6813213 /* PlanReminderPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanReminderPage.swift; sourceTree = "<group>"; };
+		8612ED2A38D8E01E32F5CA99 /* PlanReminderE2ETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanReminderE2ETests.swift; sourceTree = "<group>"; };
 		87F42FA3787F5B69A769C57E /* KstatiShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = KstatiShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		89242F20E314E4BA11E55432 /* MemoryExportE2ETests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryExportE2ETests.swift; sourceTree = "<group>"; };
 		8D97C576F63277E414D39160 /* appointment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appointment.png; sourceTree = "<group>"; };
@@ -137,6 +144,7 @@
 				B0A44D74E7243DE91C94B166 /* MemoryCore in Frameworks */,
 				EF02C690C34ECA580EF79D37 /* MemoryPersistence in Frameworks */,
 				C0F5345A96982B5908488C7D /* MemoryOCR in Frameworks */,
+				6F830C788F09F71F1432E3B3 /* PlannerNotifications in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +161,7 @@
 				6732C510B807F00DEADFD694 /* MemoryExportPage.swift */,
 				4F0D885DAA01AFC7064BD1F6 /* MemoryListPage.swift */,
 				DA64B6BDD53DABAE5A55FA35 /* PlannerPage.swift */,
+				7F08E7039D0FE311C6813213 /* PlanReminderPage.swift */,
 				3E2DAF88B673D0E6BC71B816 /* ShareSheetPage.swift */,
 			);
 			path = Pages;
@@ -172,6 +181,7 @@
 				4BD22951D79D51695AC1DB68 /* ManualCaptureE2ETests.swift */,
 				90EEBEBF58EF86D0F482EACB /* MemoryEditingE2ETests.swift */,
 				89242F20E314E4BA11E55432 /* MemoryExportE2ETests.swift */,
+				8612ED2A38D8E01E32F5CA99 /* PlanReminderE2ETests.swift */,
 				FD45B145B387D9855BB68BBF /* ShareCaptureE2ETests.swift */,
 				718193ED61A89C413D66F0D4 /* ShareFailureE2ETests.swift */,
 				7D02AE215DDAFE150D61A0BB /* ShareLinkE2ETests.swift */,
@@ -247,6 +257,7 @@
 				1B58F95CF7F8DD29F6388142 /* MemoryStore.swift */,
 				6947326C4CF6A74EECFE3557 /* PlannerEditor.swift */,
 				25031FA4F1A75E28819F2F2D /* PlannerSection.swift */,
+				4081B66B848FFCD0A74A867B /* PlanReminderControls.swift */,
 				E96025465B8AE63F9FE3CCAB /* SharedMemory.swift */,
 				CFCBCA71A2761771289F26B9 /* TodayPlannerView.swift */,
 			);
@@ -292,6 +303,7 @@
 				77526D0C32F0A49AA6613468 /* MemoryCore */,
 				BE36173BA8BCFB606BC0B906 /* MemoryPersistence */,
 				4158684B6A81369F00B73C11 /* MemoryOCR */,
+				1035DE7FD2EE85504CC6A016 /* PlannerNotifications */,
 			);
 			productName = Kstati;
 			productReference = FAF7A92C5EC287A86B7F9B57 /* Kstati.app */;
@@ -427,6 +439,7 @@
 				4AF8C084399D4C9A7F51C6BF /* MemoryExportFlow.swift in Sources */,
 				51F499244C0828EDB324989A /* MemoryListView.swift in Sources */,
 				F12E58D44475667E68A287B9 /* MemoryStore.swift in Sources */,
+				609AF3F31D2ECEFE88E1B0D3 /* PlanReminderControls.swift in Sources */,
 				A5E198660807B00B4C1CEBC1 /* PlannerEditor.swift in Sources */,
 				9BF48415B2CF27F5FE17A7CC /* PlannerSection.swift in Sources */,
 				38885AF0B5233897E180C6D3 /* SharedMemory.swift in Sources */,
@@ -456,6 +469,8 @@
 				60E647887F60D26E300A0D57 /* MemoryExportE2ETests.swift in Sources */,
 				EFA77E81326E8CE75BC19DC5 /* MemoryExportPage.swift in Sources */,
 				316F49D7068B108103069ED7 /* MemoryListPage.swift in Sources */,
+				4E15776C871E7763CEC1C79B /* PlanReminderE2ETests.swift in Sources */,
+				032B1348D2B2D23FA45D089C /* PlanReminderPage.swift in Sources */,
 				07FA6D06CC9941C3FD9EA4B3 /* PlannerPage.swift in Sources */,
 				81D87B044533B271C095195E /* ShareCaptureE2ETests.swift in Sources */,
 				380CEE4B1FD0C1F663DDC9BB /* ShareFailureE2ETests.swift in Sources */,
@@ -811,6 +826,10 @@
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1035DE7FD2EE85504CC6A016 /* PlannerNotifications */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PlannerNotifications;
+		};
 		4158684B6A81369F00B73C11 /* MemoryOCR */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = MemoryOCR;

@@ -24,7 +24,7 @@ import Testing
                 sql: """
                     DROP TABLE planner_tasks;
                     DROP TABLE planner_events;
-                    DELETE FROM grdb_migrations WHERE identifier='add-planner';
+                    DELETE FROM grdb_migrations WHERE identifier IN ('add-planner', 'add-local-reminders');
                     """)
         }
     }

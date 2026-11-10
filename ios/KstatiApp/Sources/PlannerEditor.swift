@@ -55,6 +55,11 @@ struct PlannerEditor: View {
                         .accessibilityIdentifier("plannerTomorrow")
                 }
             }
+            if let entry, let day = entry.schedule.day, let repository = store.repository,
+                day == PlannerDay(date), isEvent || hasDate, !entry.schedule.isCompleted
+            {
+                PlanReminderControls(reminders: store.reminders, repository: repository, entry: entry, day: day)
+            }
         }
         .navigationTitle(entry == nil ? "Новый план" : "Перенести план")
         .safeAreaInset(edge: .bottom) {

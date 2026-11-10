@@ -49,6 +49,8 @@ targets:
         product: MemoryPersistence
       - package: KstatiModules
         product: MemoryOCR
+      - package: KstatiModules
+        product: PlannerNotifications
       - target: KstatiShareExtension
         embed: true
   KstatiShareExtension:

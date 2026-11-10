@@ -5,6 +5,7 @@ let package = Package(
     name: "KstatiModules",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
+        .library(name: "PlannerNotifications", targets: ["PlannerNotifications"]),
         .library(name: "MemoryCore", targets: ["MemoryCore"]),
         .library(name: "MemoryPersistence", targets: ["MemoryPersistence"]),
         .library(name: "MemoryOCR", targets: ["MemoryOCR"]),
@@ -16,6 +17,16 @@ let package = Package(
         .package(url: "https://github.com/swiftlang/swift-testing.git", exact: "6.2.3"),
     ],
     targets: [
+        .target(
+            name: "PlannerNotifications", dependencies: ["MemoryCore", "MemoryPersistence"],
+            path: "PlannerNotifications/Sources"),
+        .testTarget(
+            name: "PlannerNotificationsTests",
+            dependencies: [
+                "PlannerNotifications", "MemoryCore", "MemoryPersistence",
+                .product(name: "Testing", package: "swift-testing"),
+            ],
+            path: "PlannerNotifications/Tests"),
         .target(name: "MemoryCore", path: "MemoryCore/Sources"),
         .target(name: "ShareInput", dependencies: ["MemoryCore"], path: "ShareInput/Sources"),
         .target(
