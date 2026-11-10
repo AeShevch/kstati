@@ -6,7 +6,7 @@ import MemoryCore
 public final class MemoryRepository: @unchecked Sendable {
     public let directory: URL
     private let originals: URL
-    private let dbPool: DatabasePool
+    let dbPool: DatabasePool
 
     public init(directory: URL) throws {
         self.directory = directory
@@ -54,6 +54,7 @@ public final class MemoryRepository: @unchecked Sendable {
         migrator.registerMigration("add-original-url") { db in
             try db.execute(sql: "ALTER TABLE memory_items ADD COLUMN original_url TEXT")
         }
+        migrator.registerPlannerMigration()
         try migrator.migrate(dbPool)
         try cleanupFiles()
     }

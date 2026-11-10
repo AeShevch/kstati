@@ -37,6 +37,14 @@ struct MemoryListView: View {
             .searchable(text: $query, prompt: "Поиск по тексту или ссылке")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        TodayPlannerView(store: store)
+                    } label: {
+                        Label("Сегодня", systemImage: "calendar")
+                    }
+                    .accessibilityIdentifier("openToday")
+                }
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Группы", systemImage: "folder") { managingGroups = true }
                         .accessibilityIdentifier("manageGroups")
                 }
